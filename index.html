@@ -13,13 +13,13 @@ canvas{display:block;}
 #intro{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;cursor:pointer;}
 #intro .bg{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 50%,#1a0800 0%,#000 70%);}
 #intro>*{position:relative;z-index:1;}
-#intro .dynasty{font-size:16px;color:#8b7355;letter-spacing:16px;margin-bottom:24px;opacity:0;animation:fadeUp 1.5s 0.3s forwards;}
-#intro h1{font-size:clamp(48px,10vw,96px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.5),0 0 120px rgba(255,50,0,0.2);letter-spacing:24px;margin-bottom:10px;opacity:0;animation:fadeUp 1.5s 0.8s forwards;}
-#intro .year{font-size:clamp(16px,3vw,24px);color:#b89060;letter-spacing:6px;margin-bottom:30px;opacity:0;animation:fadeUp 1.5s 1.3s forwards;}
-#intro .desc{color:#8b7355;font-size:14px;max-width:500px;text-align:center;line-height:1.8;margin-top:10px;opacity:0;animation:fadeUp 1.5s 1.8s forwards;}
-#intro .prompt{font-size:14px;color:#665540;animation:pulse 2s 2.8s infinite;margin-top:24px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+#intro .dynasty{font-size:16px;color:#8b7355;letter-spacing:16px;margin-bottom:24px;opacity:0;animation:fu 1.5s 0.3s forwards;}
+#intro h1{font-size:clamp(48px,10vw,96px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.5),0 0 120px rgba(255,50,0,0.2);letter-spacing:24px;margin-bottom:10px;opacity:0;animation:fu 1.5s 0.8s forwards;}
+#intro .year{font-size:clamp(16px,3vw,24px);color:#b89060;letter-spacing:6px;margin-bottom:30px;opacity:0;animation:fu 1.5s 1.3s forwards;}
+#intro .desc{color:#8b7355;font-size:14px;max-width:500px;text-align:center;line-height:1.8;margin-top:10px;opacity:0;animation:fu 1.5s 1.8s forwards;}
+#intro .prompt{font-size:14px;color:#665540;animation:pu 2s 2.8s infinite;margin-top:24px;}
+@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pu{0%,100%{opacity:0.3;}50%{opacity:1;}}
 
 #header{position:absolute;top:0;left:0;width:100%;padding:10px 20px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;z-index:10;}
 #header h1{font-size:18px;color:#c8a060;letter-spacing:6px;text-shadow:0 2px 8px #000;}
@@ -28,13 +28,14 @@ canvas{display:block;}
 #weather{position:absolute;top:48px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:4px 16px;border-radius:16px;font-size:13px;z-index:10;white-space:nowrap;}
 
 #armies{position:absolute;top:76px;left:12px;z-index:10;}
-.army-row{display:flex;align-items:center;gap:8px;margin:4px 0;padding:6px 10px;background:rgba(0,0,0,0.6);border-radius:6px;border-left:3px solid;font-size:12px;min-width:190px;}
+.army-row{display:flex;align-items:center;gap:8px;margin:4px 0;padding:6px 10px;background:rgba(0,0,0,0.6);border-radius:6px;border-left:3px solid;font-size:12px;min-width:200px;}
 .army-row.cao{border-color:#4488ff;}.army-row.sun{border-color:#ff4444;}.army-row.liu{border-color:#44cc44;}
-.army-row .name{font-weight:bold;min-width:45px;}.army-row.cao .name{color:#6699ff;}.army-row.sun .name{color:#ff6666;}.army-row.liu .name{color:#66dd66;}
-.army-row .bar{width:70px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.army-row .name{font-weight:bold;min-width:50px;}.army-row.cao .name{color:#6699ff;}.army-row.sun .name{color:#ff6666;}.army-row.liu .name{color:#66dd66;}
+.army-row .bar{width:80px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
 .army-row .bar-f{height:100%;border-radius:2px;transition:width 0.8s;}
 .army-row.cao .bar-f{background:#4488ff;}.army-row.sun .bar-f{background:#ff4444;}.army-row.liu .bar-f{background:#44cc44;}
-.army-row .count{color:#999;font-size:10px;min-width:55px;text-align:right;}
+.army-row .count{color:#999;font-size:10px;min-width:60px;text-align:right;}
+.army-row .loc{color:#777;font-size:9px;min-width:40px;}
 
 #events{position:absolute;top:76px;right:12px;width:240px;max-height:calc(100vh - 180px);overflow-y:auto;background:rgba(0,0,0,0.6);border-radius:8px;padding:10px;z-index:10;}
 #events h3{font-size:13px;color:#c8a060;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.1);}
@@ -46,14 +47,14 @@ canvas{display:block;}
 #legend div{margin:2px 0;display:flex;align-items:center;gap:6px;}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
-#minimap{position:absolute;bottom:84px;left:12px;width:130px;height:72px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:6px;z-index:10;overflow:hidden;}
+#minimap{position:absolute;bottom:84px;left:12px;width:160px;height:90px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:6px;z-index:10;overflow:hidden;}
 #minimap canvas{width:100%;height:100%;}
 
 #cam-hint{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.25);z-index:10;white-space:nowrap;}
 
-#strategy-popup{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);font-size:clamp(28px,6vw,56px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.8),0 0 120px rgba(255,50,0,0.4),0 4px 8px #000;pointer-events:none;z-index:50;opacity:0;transition:opacity 0.4s;letter-spacing:10px;white-space:nowrap;}
+#strategy-popup{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);font-size:clamp(28px,6vw,56px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.8),0 0 120px rgba(255,50,0,0.4),0 4px 8px #000;pointer-events:none;z-index:50;opacity:0;transition:opacity 0.4s;letter-spacing:10px;white-space:nowrap;}
 
-#cam-name{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(16px,2.5vw,24px);color:rgba(200,160,96,0.9);text-shadow:0 2px 12px #000;pointer-events:none;z-index:45;opacity:0;transition:opacity 0.6s;letter-spacing:6px;}
+#cam-name{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(14px,2vw,20px);color:rgba(200,160,96,0.9);text-shadow:0 2px 12px #000;pointer-events:none;z-index:45;opacity:0;transition:opacity 0.6s;letter-spacing:6px;}
 
 #audio-btn{position:absolute;top:12px;right:12px;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;pointer-events:auto;}
 
@@ -67,10 +68,6 @@ canvas{display:block;}
 #t-label{position:absolute;top:12px;left:0;width:100%;display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,0.3);pointer-events:none;}
 #t-time{font-size:11px;color:#c8a060;min-width:75px;text-align:center;white-space:nowrap;}
 
-/* 戰鬥傷害數字 */
-#dmg-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20;}
-.dmg-num{position:absolute;font-size:16px;font-weight:bold;color:#ff4444;text-shadow:0 0 4px #000,0 2px 4px #000;pointer-events:none;animation:dmgFloat 1.2s forwards;}
-@keyframes dmgFloat{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-40px) scale(0.5);}}
 </style>
 </head>
 <body>
@@ -81,9 +78,9 @@ canvas{display:block;}
   <h1>赤壁之戰</h1>
   <div class="year">建安十三年 公元 208 年</div>
   <div class="desc">
-    曹操率八十萬大軍順江而下<br>
-    孫權劉備聯軍五萬抵禦<br>
-    周瑜黃蓋火攻定三分天下
+    曹操據荊州，率軍南下<br>
+    劉備敗走夏口，孫權遣周瑜東下<br>
+    聯軍於赤壁以火攻大破曹軍
   </div>
   <div class="prompt">- 點擊任意處開始 -</div>
 </div>
@@ -97,9 +94,9 @@ canvas{display:block;}
   <button id="audio-btn">🔇 音效</button>
 
   <div id="armies">
-    <div class="army-row cao"><span class="name">曹操</span><div class="bar"><div class="bar-f" id="cao-bar" style="width:100%"></div></div><span class="count" id="cao-num">830,000</span></div>
-    <div class="army-row sun"><span class="name">孫權</span><div class="bar"><div class="bar-f" id="sun-bar" style="width:60%"></div></div><span class="count" id="sun-num">50,000</span></div>
-    <div class="army-row liu"><span class="name">劉備</span><div class="bar"><div class="bar-f" id="liu-bar" style="width:24%"></div></div><span class="count" id="liu-num">20,000</span></div>
+    <div class="army-row cao"><span class="name">曹操</span><div class="bar"><div class="bar-f" id="cao-bar" style="width:100%"></div></div><span class="count" id="cao-num">200,000</span><span class="loc" id="cao-loc">荊州</span></div>
+    <div class="army-row sun"><span class="name">周瑜</span><div class="bar"><div class="bar-f" id="sun-bar" style="width:60%"></div></div><span class="count" id="sun-num">30,000</span><span class="loc" id="sun-loc">柴桑</span></div>
+    <div class="army-row liu"><span class="name">劉備</span><div class="bar"><div class="bar-f" id="liu-bar" style="width:24%"></div></div><span class="count" id="liu-num">20,000</span><span class="loc" id="liu-loc">新野</span></div>
   </div>
 
   <div id="events"><h3>戰事記錄</h3><div id="ev-list"></div></div>
@@ -121,12 +118,11 @@ canvas{display:block;}
     <div id="t-track">
       <div id="t-fill"></div>
       <div id="t-thumb"></div>
-      <div id="t-label"><span>曹操南下</span><span>周瑜決戰</span><span>火攻赤壁</span><span>天下三分</span></div>
+      <div id="t-label"><span>曹操南下</span><span>孫劉聯盟</span><span>赤壁火攻</span><span>天下三分</span></div>
     </div>
     <div id="t-time">建安十三年冬</div>
   </div>
 </div>
-<div id="dmg-overlay"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/controls/OrbitControls.js"></script>
@@ -135,14 +131,23 @@ canvas{display:block;}
 "use strict";
 
 /* ========================================================
-   赤壁之戰 3D 戰鬥場景
+   赤壁之戰 3D 戰鬥場景 (歷史修正版)
+   
+   正確地理與歷史：
+   - 曹操佔荊州後順長江東下，主力駐紮烏林（北岸）
+   - 劉備在長坂坡敗後退至夏口（漢水入江口）
+   - 孫權遣周瑜率水軍三萬東下，於赤壁（南岸）與劉備會合
+   - 赤壁在烏林對岸，隔長江相望
+   - 火攻為水戰，黃蓋率火船衝入曹軍船陣
+   - 曹軍敗後由陸路經華容道撤退（泥濘小路，不在河上）
+   - 關羽受命駐守華容道（赤壁戰後）
    ======================================================== */
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050510);
-scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0005);
+scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0004);
 
-var camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 1, 3000);
+var camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 1, 4000);
 var renderer = new THREE.WebGLRenderer({antialias:true, powerPreference:'low-power'});
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
@@ -155,9 +160,9 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.04;
 controls.maxPolarAngle = Math.PI*0.48;
 controls.minDistance = 30;
-controls.maxDistance = 1200;
-controls.target.set(0,0,-50);
-camera.position.set(0, 300, 450);
+controls.maxDistance = 1500;
+controls.target.set(0,0,-100);
+camera.position.set(0, 350, 500);
 
 /* ====== 光照 ====== */
 var ambLight = new THREE.AmbientLight(0x334455, 0.5);
@@ -166,42 +171,61 @@ var sunLight = new THREE.DirectionalLight(0xffeedd, 1);
 sunLight.position.set(200,300,100);
 sunLight.castShadow = true;
 sunLight.shadow.mapSize.set(1024,1024);
-sunLight.shadow.camera.left=-500; sunLight.shadow.camera.right=500;
-sunLight.shadow.camera.top=500; sunLight.shadow.camera.bottom=-500;
+sunLight.shadow.camera.left=-600; sunLight.shadow.camera.right=600;
+sunLight.shadow.camera.top=600; sunLight.shadow.camera.bottom=-600;
 scene.add(sunLight);
 scene.add(new THREE.HemisphereLight(0x6688aa, 0x443322, 0.3));
 
-/* ====== 地形 ====== */
-// 長江
-var waterGeo = new THREE.PlaneGeometry(2400, 800, 60, 25);
+/* ========================================================
+   地形 - 正確地理佈局
+   
+   長江東西走向（畫面中為南北走向，方便觀看）
+   北岸（上/西側）：烏林 - 曹軍駐地
+   南岸（下/東側）：赤壁 - 孫劉聯軍
+   上游（左側）：荊州、夏口
+   下游（右側）：柴桑方向
+   
+   華容道：陸路，在曹軍北岸以北的陸地上，不在河上
+   ======================================================== */
+
+// 長江 - 東西走向（畫面中為南北向）
+var waterGeo = new THREE.PlaneGeometry(600, 2000, 40, 60);
 var waterMat = new THREE.MeshPhongMaterial({color:0x0a2a4a, shininess:120, specular:0x3355aa, transparent:true, opacity:0.85});
 var water = new THREE.Mesh(waterGeo, waterMat);
 water.rotation.x = -Math.PI/2;
 water.receiveShadow = true;
 scene.add(water);
 
-// 北岸 (曹)
-function makeBank(w, d, z) {
+// 北岸（曹軍側 - 烏林）
+function makeBank(w, d, cx, cz) {
   var g = new THREE.PlaneGeometry(w, d, 30, 8);
   var p = g.attributes.position;
   for(var i=0;i<p.count;i++) p.setZ(i, 3+Math.random()*2.5);
   g.computeVertexNormals();
   var mesh = new THREE.Mesh(g, new THREE.MeshPhongMaterial({color:0x2a4a1a, flatShading:true}));
   mesh.rotation.x = -Math.PI/2;
-  mesh.position.set(0, 0.5, z);
+  mesh.position.set(cx, 0.5, cz);
   mesh.receiveShadow = true;
   scene.add(mesh);
 }
-makeBank(2400, 200, -420);
-makeBank(2400, 220, 380);
+// 北岸（曹）- 在江水以北（畫面右側）
+makeBank(300, 600, 250, -100);
+// 南岸（孫劉）- 在江水以南（畫面左側）
+makeBank(300, 600, -250, -100);
 
-// 赤壁山
-var hill = new THREE.Mesh(new THREE.ConeGeometry(40, 50, 6, 3), new THREE.MeshPhongMaterial({color:0x8b4513, flatShading:true}));
-hill.position.set(120, 15, 340);
+// 赤壁山（南岸）
+var hill = new THREE.Mesh(new THREE.ConeGeometry(35, 45, 6, 3), new THREE.MeshPhongMaterial({color:0x8b4513, flatShading:true}));
+hill.position.set(-250, 15, 50);
 hill.castShadow = true;
 scene.add(hill);
 
-// 標籤
+// 華容道（北岸以北的陸地，不在河上）
+var huarongRoad = new THREE.Mesh(new THREE.PlaneGeometry(8, 200, 2, 8), new THREE.MeshPhongMaterial({color:0x4a3520}));
+huarongRoad.rotation.x = -Math.PI/2;
+huarongRoad.position.set(250, 1.5, -250);
+scene.add(huarongRoad);
+
+// 標籤 - 正確位置
 function addLabel(text, x, y, z, color, sz) {
   sz = sz || 1;
   var c = document.createElement('canvas');
@@ -215,36 +239,42 @@ function addLabel(text, x, y, z, color, sz) {
   var sp = new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));
   sp.position.set(x,y,z); sp.scale.set(70*sz,17.5*sz,1);
   scene.add(sp);
+  return sp;
 }
-addLabel('赤壁', 120, 60, 340, 0xff6644, 1.3);
-addLabel('長江', -200, 6, 0, 0x6699cc);
-addLabel('烏林', -200, 6, -400, 0x889999);
-addLabel('華容道', -400, 6, 150, 0x889999);
+
+// 地理標籤
+addLabel('長 江', 0, 6, 0, 0x6699cc, 0.8);
+addLabel('烏林（曹軍）', 200, 8, -100, 0x8899cc, 0.9);
+addLabel('赤壁（聯軍）', -200, 8, 50, 0xcc8866, 0.9);
+addLabel('夏口', 0, 8, -400, 0x889999, 0.8);
+addLabel('荊州', 0, 8, -550, 0x889999, 0.8);
+addLabel('華容道', 250, 8, -250, 0xccaa66, 0.9);
+addLabel('柴桑方向 →', -200, 6, 300, 0x668866, 0.7);
 
 /* ========================================================
    船艦系統
    ======================================================== */
 function makeShip(color, isFlagship) {
   var g = new THREE.Group();
-  var scale = isFlagship ? 1.5 : 0.8;
+  var sc = isFlagship ? 1.5 : 0.9;
   // 船體
   var hull = new THREE.Mesh(
-    new THREE.BoxGeometry(6*scale, 2.5*scale, 16*scale),
+    new THREE.BoxGeometry(5*sc, 2*sc, 14*sc),
     new THREE.MeshPhongMaterial({color:0x7a6040})
   );
   hull.castShadow = true;
   g.add(hull);
   // 甲板
-  var deck = new THREE.Mesh(new THREE.BoxGeometry(5.5*scale,0.4*scale,15*scale), new THREE.MeshPhongMaterial({color:0x9a8060}));
-  deck.position.y = 1.45*scale;
+  var deck = new THREE.Mesh(new THREE.BoxGeometry(4.5*sc,0.3*sc,13*sc), new THREE.MeshPhongMaterial({color:0x9a8060}));
+  deck.position.y = 1.2*sc;
   g.add(deck);
   // 桅杆
-  var mast = new THREE.Mesh(new THREE.CylinderGeometry(0.2*scale,0.2*scale,12*scale,4), new THREE.MeshPhongMaterial({color:0x5a4230}));
-  mast.position.y = 7.5*scale;
+  var mast = new THREE.Mesh(new THREE.CylinderGeometry(0.15*sc,0.15*sc,10*sc,4), new THREE.MeshPhongMaterial({color:0x5a4230}));
+  mast.position.y = 6*sc;
   g.add(mast);
   // 帆
-  var sail = new THREE.Mesh(new THREE.PlaneGeometry(5*scale,8*scale), new THREE.MeshPhongMaterial({color:color,side:THREE.DoubleSide,transparent:true,opacity:0.8}));
-  sail.position.y = 7.5*scale;
+  var sail = new THREE.Mesh(new THREE.PlaneGeometry(4*sc,7*sc), new THREE.MeshPhongMaterial({color:color,side:THREE.DoubleSide,transparent:true,opacity:0.8}));
+  sail.position.y = 6*sc;
   g.add(sail);
   // 旗幟
   var fc = document.createElement('canvas');
@@ -253,9 +283,9 @@ function makeShip(color, isFlagship) {
   f.fillStyle='#'+color.toString(16).padStart(6,'0');
   f.fillRect(0,0,128,96);
   f.fillStyle='#fff'; f.font='bold 50px sans-serif'; f.textAlign='center'; f.textBaseline='middle';
-  f.fillText(color===0x4488ff?'曹':color===0xff4444?'孫':'劉', 64, 48);
-  var flag = new THREE.Mesh(new THREE.PlaneGeometry(3.5*scale,2.5*scale), new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc),side:THREE.DoubleSide}));
-  flag.position.y = 13.5*scale;
+  f.fillText(color===0x4488ff?'曹':color===0xff4444?'吳':'劉', 64, 48);
+  var flag = new THREE.Mesh(new THREE.PlaneGeometry(3*sc,2*sc), new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc),side:THREE.DoubleSide}));
+  flag.position.y = 11*sc;
   g.add(flag);
   return g;
 }
@@ -263,12 +293,14 @@ function makeShip(color, isFlagship) {
 var caoShips=[], sunShips=[], liuShips=[];
 var allShips = [];
 
-function deployShips(arr, army, color, cx, cz, cols, rows, spread) {
+// 曹軍船隊 - 從荊州方向來，駐紮烏林（北岸）
+function deployShips(arr, army, color, cx, cz, cols, rows, spread, zSpread) {
   for(var i=0;i<cols*rows;i++){
     var col=i%cols, row=Math.floor(i/cols);
     var ox = cx+(col-cols/2)*spread+(Math.random()-0.5)*8;
-    var oz = cz+(row-rows/2)*spread*0.7+(Math.random()-0.5)*6;
-    var ship = makeShip(color, (col===Math.floor(cols/2)&&row===Math.floor(rows/2)));
+    var oz = cz+(row-rows/2)*zSpread+(Math.random()-0.5)*6;
+    var isFlag = (col===Math.floor(cols/2)&&row===Math.floor(rows/2));
+    var ship = makeShip(color, isFlag);
     ship.position.set(ox,0,oz);
     scene.add(ship);
     var u = {mesh:ship, army:army, ox:ox, oz:oz, x:ox, z:oz, tx:ox, tz:oz, idx:i, burning:false};
@@ -276,121 +308,133 @@ function deployShips(arr, army, color, cx, cz, cols, rows, spread) {
     allShips.push(u);
   }
 }
-deployShips(caoShips, 'cao', 0x4488ff, -100, -300, 10, 5, 25);
-deployShips(sunShips, 'sun', 0xff4444, 0, 280, 6, 4, 25);
-deployShips(liuShips, 'liu', 0x44cc44, -60, 360, 4, 3, 25);
+
+// 曹軍初始位置：荊州方向（畫面遠處）
+deployShips(caoShips, 'cao', 0x4488ff, 100, -500, 10, 4, 22, 20);
+// 吳軍初始位置：柴桑方向（畫面近處）
+deployShips(sunShips, 'sun', 0xff4444, -100, 250, 6, 3, 22, 20);
+// 劉備軍：夏口附近
+deployShips(liuShips, 'liu', 0x44cc44, -80, -300, 3, 2, 22, 20);
 
 /* ========================================================
-   士兵系統 — 短兵相接的關鍵
+   將領 - 歷史正確位置
    ======================================================== */
-var soldiers = [];
-var soldierGeos = {};
-
-function getSoldierGeo(color) {
-  var key = color.toString(16);
-  if(!soldierGeos[key]) {
-    soldierGeos[key] = new THREE.BoxGeometry(1, 2.5, 1);
-    soldierGeos[key].material = new THREE.MeshPhongMaterial({color:color});
-  }
-  return soldierGeos[key];
-}
-
-function createSoldier(color, x, y, z, army) {
-  var body = new THREE.Mesh(
-    new THREE.BoxGeometry(0.8, 2.2, 0.6),
-    new THREE.MeshPhongMaterial({color:color})
+var generals = [];
+function addGeneral(name, title, color, x, y, z, army) {
+  var g = new THREE.Group();
+  var glow = new THREE.Mesh(
+    new THREE.SphereGeometry(2,8,8),
+    new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4})
   );
-  body.position.set(x, y+1.1, z);
-  body.castShadow = true;
-  scene.add(body);
-  // 武器 (劍/矛)
-  var weapon = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.05, 0.05, 2.5, 3),
-    new THREE.MeshPhongMaterial({color:0xcccccc})
-  );
-  weapon.position.set(x+0.5, y+1.8, z);
-  weapon.rotation.z = 0.3;
-  scene.add(weapon);
-  soldiers.push({
-    body: body, weapon: weapon,
-    x:x, y:y, z:z, army:army,
-    tx:x, tz:z,
-    alive: true,
-    attacking: false,
-    attackTimer: 0,
-    color: color
-  });
+  g.add(glow);
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(1,6,6), new THREE.MeshBasicMaterial({color:0xffffff})));
+  g.add(new THREE.PointLight(color, 2, 30));
+  addLabel(name, x, y+14, z, color, 0.8);
+  g.position.set(x,y,z);
+  scene.add(g);
+  generals.push({g:g, name:name, title:title, color:color, ox:x, oz:z, army:army});
 }
 
-// 曹軍士兵
-function deploySoldiers() {
-  // 曹軍北岸
-  for(var i=0;i<60;i++){
-    createSoldier(0x3366cc,
-      -150+Math.random()*200, 3, -390-Math.random()*40, 'cao');
-  }
-  // 曹軍船上
-  for(var i=0;i<40;i++){
-    var s = caoShips[i%caoShips.length];
-    createSoldier(0x3366cc, s.ox+(Math.random()-0.5)*20, 2.5, s.oz+(Math.random()-0.5)*10, 'cao');
-  }
-  // 吳軍南岸
-  for(var i=0;i<40;i++){
-    createSoldier(0xcc3333,
-      -50+Math.random()*150, 3, 350+Math.random()*30, 'sun');
-  }
-  // 吳軍船上
-  for(var i=0;i<25;i++){
-    var s = sunShips[i%sunShips.length];
-    createSoldier(0xcc3333, s.ox+(Math.random()-0.5)*15, 2.5, s.oz+(Math.random()-0.5)*8, 'sun');
-  }
-  // 劉備軍
-  for(var i=0;i<20;i++){
-    createSoldier(0x339933,
-      -80+Math.random()*100, 3, 370+Math.random()*30, 'liu');
-  }
-}
-deploySoldiers();
+// 曹操在烏林（北岸）
+addGeneral('曹操','魏王·荊州牧', 0x4488ff, 120, 6, -120, 'cao');
+// 周瑜在赤壁（南岸）
+addGeneral('周瑜','大都督·吳軍', 0xff4444, -120, 6, 30, 'sun');
+// 劉備在夏口/赤壁
+addGeneral('劉備','皇叔', 0x44cc44, -100, 6, -200, 'liu');
+// 諸葛亮跟劉備
+addGeneral('諸葛亮','軍師', 0x44cc44, -80, 6, -220, 'liu');
+// 黃蓋在吳軍
+addGeneral('黃蓋','老將', 0xff4444, -140, 6, 50, 'sun');
+// 龐統後來投奔劉備
+addGeneral('龐統','鳳雛', 0x44cc44, -90, 6, -250, 'liu');
+// 魯肅在吳軍
+addGeneral('魯肅','長史', 0xff4444, -100, 6, 10, 'sun');
+// 許褚在曹軍
+addGeneral('許褚','虎賁', 0x4488ff, 140, 6, -130, 'cao');
+
+// 關羽 - 不在赤壁戰場，在江夏/華容道方向
+// 戰後才出現
+var guanYuGroup = new THREE.Group();
+var gyGlow = new THREE.Mesh(new THREE.SphereGeometry(2,8,8), new THREE.MeshBasicMaterial({color:0x44cc44,transparent:true,opacity:0.4}));
+guanYuGroup.add(gyGlow);
+guanYuGroup.add(new THREE.Mesh(new THREE.SphereGeometry(1,6,6), new THREE.MeshBasicMaterial({color:0xffffff})));
+guanYuGroup.add(new THREE.PointLight(0x44cc44, 2, 30));
+addGeneral('關羽','漢壽亭侯', 0x44cc44, 250, 6, -250, 'liu');
+guanYuGroup.position.set(250, 6, -250);
+guanYuGroup.visible = false; // 初期不可見
+scene.add(guanYuGroup);
 
 /* ========================================================
-   箭矢系統
+   事件軸 - 歷史正確順序
    ======================================================== */
-var arrows = [];
-
-function shootArrow(fromX, fromY, fromZ, toX, toY, toZ, color) {
-  var arrow = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.05, 0.05, 1.5, 3),
-    new THREE.MeshBasicMaterial({color:color || 0xffff88})
-  );
-  arrow.position.set(fromX, fromY, fromZ);
-  var dir = new THREE.Vector3(toX-fromX, toY-fromY, toZ-fromZ).normalize();
-  var speed = 3+Math.random()*2;
-  arrows.push({
-    mesh: arrow,
-    vx: dir.x*speed, vy: dir.y*speed, vz: dir.z*speed,
-    life: 1, color: color || 0xffff88
-  });
-  scene.add(arrow);
-}
-
-function arrowRain(count, fromZ, toZ, spread) {
-  for(var i=0;i<count;i++){
-    shootArrow(
-      (Math.random()-0.5)*spread, 15+Math.random()*10, fromZ+(Math.random()-0.5)*20,
-      (Math.random()-0.5)*spread, 2, toZ+(Math.random()-0.5)*20,
-      0xffaa44
-    );
-  }
-}
+var events = [
+  {t:0.00, lb:'曹操佔荊州'},
+  {t:0.05, lb:'曹操順江東下'},
+  {t:0.10, lb:'劉備敗走長坂坡'},
+  {t:0.15, lb:'劉備退守夏口'},
+  {t:0.20, lb:'諸葛亮赴柴桑'},
+  {t:0.25, lb:'孫劉聯盟成立'},
+  {t:0.30, lb:'周瑜率軍東下'},
+  {t:0.35, lb:'聯軍抵赤壁'},
+  {t:0.40, lb:'曹軍駐烏林'},
+  {t:0.45, lb:'隔江相望'},
+  {t:0.50, lb:'龐統獻連環計'},
+  {t:0.55, lb:'黃蓋詐降（苦肉計）'},
+  {t:0.60, lb:'諸葛亮借東風'},
+  {t:0.65, lb:'火船衝入曹營！'},
+  {t:0.70, lb:'赤壁火攻！曹軍大敗'},
+  {t:0.75, lb:'周瑜率軍追擊'},
+  {t:0.80, lb:'曹操北撤'},
+  {t:0.85, lb:'曹操敗走華容道'},
+  {t:0.90, lb:'關羽義釋曹操'},
+  {t:0.95, lb:'天下三分'},
+];
 
 /* ========================================================
-   火攻粒子
+   電影運鏡 - 16個歷史鏡頭
+   ======================================================== */
+var camViews = [
+  {name:'荊州全景', pos:[0,250,400], tar:[0,0,-200], dur:160},
+  {name:'曹操東征', pos:[100,80,-400], tar:[100,0,-500], dur:140},
+  {name:'長坂之戰', pos:[-80,50,-250], tar:[-80,0,-300], dur:120},
+  {name:'劉備退夏口', pos:[-50,60,-300], tar:[0,0,-400], dur:140},
+  {name:'諸葛亮出使', pos:[0,150,0], tar:[0,0,0], dur:140},
+  {name:'孫劉聯盟', pos:[-60,40,-50], tar:[-60,0,-50], dur:140},
+  {name:'周瑜東下', pos:[-100,60,200], tar:[-100,0,250], dur:140},
+  {name:'聯軍抵赤壁', pos:[-150,80,50], tar:[-120,0,30], dur:140},
+  {name:'曹軍駐烏林', pos:[120,80,-100], tar:[100,0,-120], dur:140},
+  {name:'隔江相望', pos:[0,150,0], tar:[0,0,-50], dur:200},
+  {name:'連環計', pos:[100,40,-100], tar:[100,0,-100], dur:120},
+  {name:'苦肉計', pos:[-120,40,30], tar:[-140,0,50], dur:120},
+  {name:'東南風起', pos:[0,200,0], tar:[0,0,-50], dur:160},
+  {name:'火船衝陣！', pos:[-50,20,-50], tar:[0,0,-100], dur:180},
+  {name:'赤壁大火！', pos:[100,30,-80], tar:[80,0,-100], dur:200},
+  {name:'曹軍崩潰', pos:[80,60,-100], tar:[100,0,-150], dur:160},
+  {name:'周瑜追擊', pos:[-80,60,-50], tar:[-100,0,-80], dur:140},
+  {name:'曹操敗走', pos:[100,100,-200], tar:[120,0,-200], dur:140},
+  {name:'華容道', pos:[250,60,-250], tar:[250,0,-250], dur:160},
+  {name:'天下三分', pos:[0,350,100], tar:[0,0,-100], dur:300},
+];
+
+var camIdx = 0;
+var camT = 0;
+var camFrom = {x:0,y:350,z:500};
+var camTo = {x:0,y:250,z:400};
+var camTarFrom = new THREE.Vector3(0,0,-100);
+var camTarTo = new THREE.Vector3(0,0,-200);
+var camTransitioning = true;
+var camHoldTimer = 0;
+var userCam = false;
+
+/* ========================================================
+   粒子系統
    ======================================================== */
 var fireParticles = [];
 var smokeParticles = [];
+var arrows = [];
 
 function spawnFire(x, y, z) {
-  for(var i=0;i<15;i++){
+  for(var i=0;i<12;i++){
     var s = 0.3+Math.random()*1.5;
     var m = new THREE.Mesh(
       new THREE.SphereGeometry(s,4,4),
@@ -403,26 +447,24 @@ function spawnFire(x, y, z) {
     scene.add(m);
     fireParticles.push({m:m, vx:(Math.random()-0.5)*0.4, vy:0.5+Math.random()*1, vz:(Math.random()-0.5)*0.4, life:1, decay:0.004+Math.random()*0.006});
   }
-  // 煙
-  for(var i=0;i<8;i++){
+  for(var i=0;i<6;i++){
     var s = 2+Math.random()*4;
     var m = new THREE.Mesh(
       new THREE.SphereGeometry(s,4,4),
       new THREE.MeshBasicMaterial({color:0x222222, transparent:true, opacity:0.5})
     );
-    m.position.set(x+(Math.random()-0.5)*20, y+5+Math.random()*8, z+(Math.random()-0.5)*20);
+    m.position.set(x+(Math.random()-0.5)*15, y+5+Math.random()*6, z+(Math.random()-0.5)*15);
     scene.add(m);
     smokeParticles.push({m:m, vy:0.2+Math.random()*0.3, life:1, decay:0.002+Math.random()*0.003});
   }
-  // 火光
-  var fl = new THREE.PointLight(0xff6600, 8, 100);
+  var fl = new THREE.PointLight(0xff6600, 8, 80);
   fl.position.set(x, y+10, z);
   scene.add(fl);
   setTimeout(function(){scene.remove(fl);}, 2000);
 }
 
 function spawnExplosion(x, y, z) {
-  for(var i=0;i<25;i++){
+  for(var i=0;i<20;i++){
     var angle = Math.random()*Math.PI*2;
     var up = Math.random()*0.5;
     var s = 0.5+Math.random()*2;
@@ -441,20 +483,17 @@ function spawnExplosion(x, y, z) {
       life:1, decay:0.008+Math.random()*0.012
     });
   }
-  var fl = new THREE.PointLight(0xffaa00, 20, 150);
+  var fl = new THREE.PointLight(0xffaa00, 20, 120);
   fl.position.set(x, y+5, z);
   scene.add(fl);
   setTimeout(function(){scene.remove(fl);}, 1500);
 }
 
-/* ========================================================
-   閃電
-   ======================================================== */
 function flashLightning() {
   var pts = [];
   var cx=(Math.random()-0.5)*600, cy=100, cz=(Math.random()-0.5)*600;
   for(var i=0;i<8;i++){cx+=(Math.random()-0.5)*12;cy-=15+Math.random()*5;cz+=(Math.random()-0.5)*12;pts.push(new THREE.Vector3(cx,cy,cz));}
-  var ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color:0xaaccff, linewidth:2}));
+  var ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color:0xaaccff}));
   scene.add(ln);
   var fl = new THREE.PointLight(0xaaccff, 25, 800);
   fl.position.set(cx,60,cz);
@@ -462,112 +501,17 @@ function flashLightning() {
   setTimeout(function(){scene.remove(ln);scene.remove(fl);}, 500);
 }
 
-/* ========================================================
-   將領
-   ======================================================== */
-var generals = [];
-function addGeneral(name, title, color, x, y, z) {
-  var g = new THREE.Group();
-  // 光環
-  var glow = new THREE.Mesh(
-    new THREE.SphereGeometry(2,8,8),
-    new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4})
+function shootArrow(fromX, fromY, fromZ, toX, toY, toZ) {
+  var arrow = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.05, 0.05, 1.2, 3),
+    new THREE.MeshBasicMaterial({color:0xffff88})
   );
-  g.add(glow);
-  // 核心
-  g.add(new THREE.Mesh(new THREE.SphereGeometry(1,6,6), new THREE.MeshBasicMaterial({color:0xffffff})));
-  g.add(new THREE.PointLight(color, 2, 30));
-  // 標籤
-  addLabel(name, x, y+14, z, color, 0.8);
-  g.position.set(x,y,z);
-  scene.add(g);
-  generals.push({g:g, name:name, title:title, color:color, ox:x, oz:z});
+  arrow.position.set(fromX, fromY, fromZ);
+  var dir = new THREE.Vector3(toX-fromX, toY-fromY, toZ-fromZ).normalize();
+  var speed = 3+Math.random()*2;
+  arrows.push({mesh:arrow, vx:dir.x*speed, vy:dir.y*speed, vz:dir.z*speed, life:1});
+  scene.add(arrow);
 }
-
-addGeneral('曹操','魏王·83萬大軍', 0x4488ff, -100, 6, -270);
-addGeneral('周瑜','大都督·吳軍', 0xff4444, 10, 6, 280);
-addGeneral('劉備','皇叔·2萬精兵', 0x44cc44, -50, 6, 365);
-addGeneral('諸葛亮','軍師·借東風', 0x44cc44, -25, 6, 355);
-addGeneral('黃蓋','老將·火攻計', 0xff4444, 30, 6, 300);
-addGeneral('龐統','鳳雛·連環計', 0x44cc44, -120, 6, -260);
-addGeneral('關羽','萬軍取上将', 0x44cc44, -90, 6, 380);
-addGeneral('趙雲','長坂英雄', 0x44cc44, -70, 6, 385);
-addGeneral('魯肅','盟約推手', 0xff4444, 25, 6, 340);
-addGeneral('許褚','虎賁將軍', 0x4488ff, -130, 6, -275);
-
-/* ========================================================
-   事件軸
-   ======================================================== */
-var events = [
-  {t:0.00, lb:'曹操南下'},
-  {t:0.05, lb:'劉備敗退'},
-  {t:0.10, lb:'孫劉聯盟'},
-  {t:0.15, lb:'周瑜率軍'},
-  {t:0.20, lb:'曹軍駐烏林'},
-  {t:0.25, lb:'連環計', strat:'連環計 — 曹軍鐵鏈相連！'},
-  {t:0.30, lb:'周瑜探軍'},
-  {t:0.35, lb:'苦肉計', strat:'苦肉計 — 黃蓋詐降！'},
-  {t:0.40, lb:'草船借箭'},
-  {t:0.45, lb:'借東風', strat:'東南大風起！'},
-  {t:0.50, lb:'火船出發'},
-  {t:0.55, lb:'赤壁火攻！', strat:'火攻發動！赤壁燒燬！'},
-  {t:0.60, lb:'兩軍激戰！'},
-  {t:0.65, lb:'曹軍崩潰'},
-  {t:0.70, lb:'孫劉夾擊'},
-  {t:0.75, lb:'曹操敗走'},
-  {t:0.82, lb:'華容道義釋'},
-  {t:0.88, lb:'周瑜追擊'},
-  {t:0.92, lb:'三足鼎立', strat:'三足鼎立 · 天下三分！'},
-  {t:0.97, lb:'天下三分'},
-];
-
-/* ========================================================
-   電影運鏡系統
-   ======================================================== */
-var camViews = [
-  // 每個鏡頭: {name, pos, target, duration(幀), type}
-  {name:'長江全景', pos:[0,350,300], tar:[0,0,-100], dur:180},
-  {name:'曹軍南下', pos:[-100,120,-220], tar:[-100,0,-300], dur:160},
-  {name:'劉備敗退', pos:[-40,60,400], tar:[-60,0,370], dur:140},
-  {name:'孫劉結盟', pos:[-30,40,340], tar:[-30,3,360], dur:160},
-  {name:'周瑜中軍', pos:[10,60,350], tar:[10,0,280], dur:160},
-  {name:'連環計', pos:[-80,50,-260], tar:[-100,0,-290], dur:140},
-  {name:'黃蓋詐降', pos:[30,40,330], tar:[30,3,300], dur:160},
-  {name:'東南風起', pos:[0,200,200], tar:[0,0,0], dur:200},
-  {name:'火船衝陣', pos:[40,30,250], tar:[0,0,-100], dur:160},
-  {name:'赤壁火攻！', pos:[-50,40,-200], tar:[-100,0,-280], dur:200},
-  {name:'火海煉獄', pos:[-100,25,-270], tar:[-100,5,-300], dur:180},
-  {name:'兩軍對決', pos:[0,30,100], tar:[0,0,-50], dur:200},
-  {name:'近身肉搏', pos:[0,15,80], tar:[0,2,50], dur:160},
-  {name:'曹軍崩潰', pos:[-120,60,-250], tar:[-100,0,-300], dur:160},
-  {name:'華容道', pos:[-300,80,50], tar:[-380,0,150], dur:160},
-  {name:'天下三分', pos:[0,400,200], tar:[0,0,0], dur:300},
-];
-
-var camIdx = 0;
-var camT = 0;
-var camFrom = {x:0,y:300,z:450};
-var camTo = {x:0,y:350,z:300};
-var camTarFrom = new THREE.Vector3(0,0,-50);
-var camTarTo = new THREE.Vector3(0,0,-100);
-var camTransitioning = true;
-var camHoldTimer = 0;
-var userCam = false;
-
-/* ========================================================
-   狀態
-   ======================================================== */
-var progress = 0;
-var playing = false;
-var speed = 1;
-var fireDone = false;
-var windDone = false;
-var started = false;
-var audioOn = false;
-var strategyTimer = 0;
-var battleStarted = false;
-var lastSoundPhase = -1;
-var frameCount = 0;
 
 /* ========================================================
    音效
@@ -635,172 +579,162 @@ function startBGM(){
     beat++;
   },700);
 }
-
 function stopBGM(){if(bgInterval){clearInterval(bgInterval);bgInterval=null;}}
 
 /* ========================================================
-   戰鬥邏輯
+   狀態
    ======================================================== */
-function updateSoldiers(p) {
-  var T = performance.now()*0.001;
-
-  soldiers.forEach(function(s, idx){
-    if(!s.alive) return;
-
-    if(p < 0.5) {
-      // 進軍階段 — 慢慢向江心推進
-      if(s.army === 'cao') {
-        s.tx = s.x + Math.sin(T*0.3+idx*0.1)*1;
-        s.tz = s.z - 0.15; // 向南推進
-      } else if(s.army === 'sun') {
-        s.tz = s.z + 0.1; // 向北推進
-      } else {
-        s.tz = s.z + 0.05;
-      }
-    } else if(p < 0.55) {
-      // 火攻前 — 加速
-      if(s.army === 'cao') s.tz = s.z - 0.5;
-      else s.tz = s.z + 0.3;
-    } else if(p < 0.75) {
-      // 戰鬥階段 — 混戰！
-      if(s.army === 'cao') {
-        s.tx = s.x + (Math.random()-0.5)*3;
-        s.tz = s.z - 0.3 - Math.random()*0.5; // 混亂撤退
-        // 火攻後曹軍士兵死亡
-        if(p > 0.6 && Math.random() < 0.005) {
-          s.alive = false;
-          scene.remove(s.body);
-          scene.remove(s.weapon);
-        }
-      } else if(s.army === 'sun') {
-        s.tz = s.z + 0.5; // 追擊
-        s.tx = s.x + (Math.random()-0.5)*2;
-      } else {
-        s.tz = s.z + 0.4;
-        s.tx = s.x + (Math.random()-0.5)*2;
-      }
-      // 攻擊動畫
-      s.attackTimer += 0.1;
-      if(s.attackTimer > 2) {
-        s.attackTimer = 0;
-      }
-    } else {
-      // 撤退/追擊
-      if(s.army === 'cao') {
-        s.tx = s.x - 1; s.tz = s.z - 1;
-        if(Math.random() < 0.01) { s.alive=false; scene.remove(s.body); scene.remove(s.weapon); }
-      } else {
-        s.tz = s.z + 0.3;
-      }
-    }
-
-    s.x += (s.tx - s.x) * 0.08;
-    s.z += (s.tz - s.z) * 0.08;
-    s.body.position.set(s.x, s.y+1.1, s.z);
-    s.weapon.position.set(s.x+0.4, s.y+1.5, s.z);
-
-    // 攻擊動畫 — 劍揮舞
-    if(s.attackTimer > 0 && s.attackTimer < 2 && p >= 0.55 && p <= 0.75) {
-      s.weapon.rotation.z = 0.3 + Math.sin(s.attackTimer * 8) * 1.2;
-      s.weapon.rotation.x = Math.sin(s.attackTimer * 6) * 0.3;
-    }
-
-    // 朝向
-    s.body.lookAt(s.tx, s.body.position.y, s.tz);
-  });
-}
+var progress = 0;
+var playing = false;
+var speed = 1;
+var fireDone = false;
+var windDone = false;
+var started = false;
+var audioOn = false;
+var strategyTimer = 0;
+var lastSoundPhase = -1;
+var frameCount = 0;
 
 /* ========================================================
-   船隻移動
+   船隻移動 - 歷史正確路線
    ======================================================== */
 function moveShips(p) {
   var T = performance.now()*0.001;
 
+  /* ---- 曹軍 ---- */
+  // 從荊州(-500)南下至烏林(-100)駐紮，火攻後崩潰，經華容道撤退
   caoShips.forEach(function(u, i){
-    if(p < 0.15) {
-      u.tx = u.ox + Math.sin(T*0.3+i)*2;
-      u.tz = u.oz - p/0.15 * 40;
-    } else if(p < 0.25) {
-      u.tx = u.ox + Math.sin(T*0.2+i)*1.5;
-      u.tz = u.oz - 40;
-    } else if(p < 0.5) {
-      var cr = Math.floor(i/10), cc = i%10;
-      u.tx = -100 + (cc-4.5)*8;
-      u.tz = u.oz - 40 + (cr-2)*12;
-    } else if(p < 0.55) {
-      // 火攻前最後整隊
-      u.tx = u.tx || u.ox;
-      u.tz = u.tz || u.oz - 40;
+    if(p < 0.1) {
+      // 荊州出發
+      u.tx = u.ox;
+      u.tz = u.oz + (p/0.1)*100; // 向東移動
+    } else if(p < 0.4) {
+      // 順江東下至烏林
+      var t = (p-0.1)/0.3;
+      u.tx = 80 + (u.idx%10-4.5)*18;
+      u.tz = -500 + t*400 + Math.floor(u.idx/10)*20;
     } else if(p < 0.65) {
-      // 火攻混亂！
-      var chaos = (p-0.55)/0.1;
-      u.tx = u.ox + Math.sin(i*9)*60*chaos;
-      u.tz = u.oz - 40 - chaos*80;
-      if(!u.burning && p > 0.58) {
+      // 駐紮烏林（北岸）
+      var cr = Math.floor(u.idx/10), cc = u.idx%10;
+      u.tx = 80 + cc*18;
+      u.tz = -120 + cr*18;
+    } else if(p < 0.7) {
+      // 火攻！混亂
+      if(!u.burning){
         u.burning = true;
-        // 船體變暗紅
         if(u.mesh.children[0]) u.mesh.children[0].material.color.setHex(0x5a2010);
       }
-    } else if(p < 0.8) {
-      var retreat = (p-0.65)/0.15;
-      u.tx = u.ox - retreat*200;
-      u.tz = u.oz - 40 + retreat*180;
+      var chaos = (p-0.65)/0.05;
+      u.tx = u.ox + (Math.random()-0.5)*40;
+      u.tz = u.oz - chaos*30;
+    } else if(p < 0.85) {
+      // 敗退 — 向北岸撤退，準備走華容道
+      var retreat = (p-0.7)/0.15;
+      u.tx = 100 + retreat*150;
+      u.tz = u.oz - retreat*100;
     } else {
-      u.tx = u.ox - 250;
-      u.tz = u.oz + 200;
+      // 經華容道撤退（北岸陸地）
+      u.tx = 250;
+      u.tz = -250 - (u.idx%5)*10;
     }
-    u.x += (u.tx-u.x)*0.03;
-    u.z += (u.tz-u.z)*0.03;
+    u.x += (u.tx-u.x)*0.02;
+    u.z += (u.tz-u.z)*0.02;
     u.mesh.position.set(u.x, Math.sin(T*2+i*0.5)*0.6, u.z);
     u.mesh.rotation.z = (u.tx-u.x)*0.004;
     u.mesh.rotation.x = (u.tz-u.z)*0.002;
   });
 
+  /* ---- 吳軍 ---- */
+  // 從柴桑（250）西進至赤壁（50），火攻時衝入曹軍
   sunShips.forEach(function(u, i){
-    if(p < 0.45) { u.tx=u.ox; u.tz=u.oz; }
-    else if(p < 0.55) {
-      u.tx = u.ox + Math.sin(T+i)*3;
-      u.tz = u.oz - (p-0.45)/0.1*60; // 火船出發
-    } else if(p < 0.6) {
-      // 衝向曹軍！
-      u.tx = u.ox + Math.sin(T*2+i)*8;
-      u.tz = u.oz - 60 - (p-0.55)/0.05*80;
-    } else if(p < 0.75) {
-      u.tx = u.ox + Math.sin(T+i)*10;
-      u.tz = u.oz - 140 - (p-0.6)/0.15*60;
+    if(p < 0.3) {
+      // 柴桑出發
+      u.tx = u.ox;
+      u.tz = u.oz - (p/0.3)*150;
+    } else if(p < 0.38) {
+      // 與劉備會合
+      u.tx = -80 + (u.idx%6-2.5)*20;
+      u.tz = 50 + Math.floor(u.idx/6)*18;
+    } else if(p < 0.65) {
+      // 駐紮赤壁（南岸），與曹軍隔江相望
+      u.tx = -80 + (u.idx%6-2.5)*20;
+      u.tz = 30 + Math.floor(u.idx/6)*18;
+    } else if(p < 0.7) {
+      // 火船衝向曹軍！
+      var rush = (p-0.65)/0.05;
+      u.tx = -80 + rush*160; // 從南岸衝向北岸
+      u.tz = 30 - rush*130;
+    } else if(p < 0.8) {
+      // 追擊
+      var ch = (p-0.7)/0.1;
+      u.tx = 80 + ch*50;
+      u.tz = -100 - ch*50;
     } else {
-      u.tx = u.ox + Math.sin(T*0.5+i)*5;
-      u.tz = u.oz - 160;
+      // 停於烏林附近
+      u.tx = 130 + (Math.random()-0.5)*20;
+      u.tz = -150 + (Math.random()-0.5)*20;
     }
-    u.x += (u.tx-u.x)*0.03;
-    u.z += (u.tz-u.z)*0.03;
+    u.x += (u.tx-u.x)*0.02;
+    u.z += (u.tz-u.z)*0.02;
     u.mesh.position.set(u.x, Math.sin(T*2+i+100)*0.6, u.z);
   });
 
+  /* ---- 劉備軍 ---- */
+  // 新野 -> 長坂坡敗 -> 夏口 -> 與吳軍會合於赤壁
   liuShips.forEach(function(u, i){
-    if(p < 0.1) {
-      u.tx = u.ox - p/0.1*30;
-      u.tz = u.oz + p/0.1*20;
-    } else if(p < 0.55) { u.tx=u.ox; u.tz=u.oz; }
-    else {
-      u.tx = u.ox + Math.sin(T+i)*5;
-      u.tz = u.oz - (p-0.55)/0.45*100;
+    if(p < 0.05) {
+      // 新野出發
+      u.tx = u.ox;
+      u.tz = u.oz + (p/0.05)*50;
+    } else if(p < 0.15) {
+      // 長坂坡敗退
+      u.tx = u.ox + (Math.random()-0.5)*20;
+      u.tz = u.oz + 50 + (p-0.05)/0.1*150;
+    } else if(p < 0.25) {
+      // 退守夏口
+      u.tx = -60 + (u.idx%3-1)*20;
+      u.tz = -380;
+    } else if(p < 0.38) {
+      // 諸葛亮出使期間，劉備守夏口
+      u.tx = -60 + (u.idx%3-1)*20;
+      u.tz = -380 + (p-0.25)/0.13*130;
+    } else if(p < 0.65) {
+      // 與吳軍會合於赤壁
+      u.tx = -120 + (u.idx%3-1)*18;
+      u.tz = 20 + Math.floor(u.idx/3)*18;
+    } else if(p < 0.8) {
+      // 夾擊曹軍
+      var ch = (p-0.65)/0.15;
+      u.tx = -120 + ch*200;
+      u.tz = 20 - ch*120;
+    } else {
+      // 駐紮
+      u.tx = 80;
+      u.tz = -100;
     }
-    u.x += (u.tx-u.x)*0.03;
-    u.z += (u.tz-u.z)*0.03;
+    u.x += (u.tx-u.x)*0.02;
+    u.z += (u.tz-u.z)*0.02;
     u.mesh.position.set(u.x, Math.sin(T*2+i+200)*0.5, u.z);
   });
 
-  // 將領
+  /* ---- 將領 ---- */
   generals.forEach(function(g, i){
-    g.g.position.x = g.ox + Math.sin(T*0.3+i*2)*4;
-    g.g.position.z = g.oz + Math.cos(T*0.2+i*3)*3;
-    g.g.children[0].scale.setScalar(1+Math.sin(T*3)*0.25);
+    g.g.position.x = g.ox + Math.sin(T*0.2+i*2)*3;
+    g.g.position.z = g.oz + Math.cos(T*0.15+i*3)*2;
+    g.g.children[0].scale.setScalar(1+Math.sin(T*3)*0.2);
   });
+
+  // 關羽 - 戰後才出現
+  if(p >= 0.85) {
+    guanYuGroup.visible = true;
+    guanYuGroup.position.set(250, 6, -250);
+  } else {
+    guanYuGroup.visible = false;
+  }
 }
 
 /* ========================================================
-   水面
+   水面 & 粒子
    ======================================================== */
 function animateWater(t) {
   var p = water.geometry.attributes.position;
@@ -827,23 +761,22 @@ function updateParticles(){
   }
   for(var i=arrows.length-1;i>=0;i--){
     var a=arrows[i];
-    a.mesh.position.x+=a.vx; a.mesh.position.y+=a.vy; a.mesh.position.z+=a.vz;
-    a.vy-=0.06; a.life-=0.012;
-    a.mesh.rotation.x += 0.3;
+    a.mesh.position.x+=a.vx;a.mesh.position.y+=a.vy;a.mesh.position.z+=a.vz;
+    a.vy-=0.06; a.life-=0.012; a.mesh.rotation.x+=0.3;
     if(a.life<=0||a.mesh.position.y<0){scene.remove(a.mesh);arrows.splice(i,1);}
   }
 }
 
 /* ========================================================
-   光照隨戰況
+   光照
    ======================================================== */
 function updateLighting(p){
-  if(p>=0.55&&p<=0.7){
+  if(p>=0.65&&p<=0.75){
     ambLight.color.setHex(0x553311);
     ambLight.intensity = 0.35+Math.sin(performance.now()*0.008)*0.2;
     renderer.toneMappingExposure = 0.5;
     scene.fog.color.setHex(0x2a1000);
-  } else if(p>=0.75&&p<=0.85){
+  } else if(p>=0.85&&p<=0.92){
     ambLight.color.setHex(0x223344);
     ambLight.intensity = 0.35;
     renderer.toneMappingExposure = 0.5;
@@ -861,12 +794,13 @@ function updateLighting(p){
    ======================================================== */
 function selectCamera(p){
   var idx;
-  if(p<0.04)idx=0;else if(p<0.10)idx=1;else if(p<0.15)idx=2;
-  else if(p<0.20)idx=3;else if(p<0.25)idx=4;else if(p<0.30)idx=5;
-  else if(p<0.35)idx=6;else if(p<0.45)idx=7;else if(p<0.50)idx=8;
-  else if(p<0.55)idx=9;else if(p<0.60)idx=10;else if(p<0.65)idx=11;
-  else if(p<0.70)idx=12;else if(p<0.75)idx=13;else if(p<0.85)idx=14;
-  else idx=15;
+  if(p<0.03)idx=0;else if(p<0.08)idx=1;else if(p<0.12)idx=2;
+  else if(p<0.16)idx=3;else if(p<0.20)idx=4;else if(p<0.25)idx=5;
+  else if(p<0.30)idx=6;else if(p<0.35)idx=7;else if(p<0.40)idx=8;
+  else if(p<0.45)idx=9;else if(p<0.50)idx=10;else if(p<0.55)idx=11;
+  else if(p<0.60)idx=12;else if(p<0.65)idx=13;else if(p<0.70)idx=14;
+  else if(p<0.75)idx=15;else if(p<0.80)idx=16;else if(p<0.85)idx=17;
+  else if(p<0.90)idx=18;else if(p<0.95)idx=19;else idx=20;
 
   if(idx!==camIdx){
     camIdx=idx;
@@ -877,16 +811,15 @@ function selectCamera(p){
     camTarTo=new THREE.Vector3(v.tar[0],v.tar[1],v.tar[2]);
     camTransitioning=true; camT=0; camHoldTimer=0;
 
-    // 顯示鏡頭名稱
     var cn=document.getElementById('cam-name');
     cn.textContent=v.name; cn.style.opacity='1';
     setTimeout(function(){cn.style.opacity='0';},2500);
 
     document.getElementById('phase-label').textContent=v.name+' — '+events.filter(function(e){return p>=e.t;}).pop().lb;
     setTimeout(function(){
-      var curEv=events[0];
-      for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){curEv=events[i];break;}}
-      document.getElementById('phase-label').textContent=curEv.lb;
+      var ce=events[0];
+      for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){ce=events[i];break;}}
+      document.getElementById('phase-label').textContent=ce.lb;
     },2500);
   }
 }
@@ -897,12 +830,11 @@ function updateCamera(){
     camHoldTimer++;
     var v=camViews[camIdx];
     var T=performance.now()*0.0003;
-    // 呼吸感微動
     camera.position.x=v.pos[0]+Math.sin(T)*3;
     camera.position.y=v.pos[1]+Math.cos(T*0.7)*2;
     camera.position.z=v.pos[2]+Math.sin(T*1.3)*3;
-    // 戰鬥階段增加震動
-    if(progress>=0.55&&progress<=0.7){
+    // 戰鬥震動
+    if(progress>=0.65&&progress<=0.75){
       camera.position.x+=(Math.random()-0.5)*1.5;
       camera.position.y+=(Math.random()-0.5)*1;
     }
@@ -942,38 +874,64 @@ function updatePhase(p){
   var active=el.querySelectorAll('.on');
   if(active.length)active[active.length-1].scrollIntoView({block:'nearest'});
 
-  var weathers=['☀ 東南風微弱','☁ 陰天','🌧 小雨','🌫 濃霧','風 東南風大起','火 烈火燎原','火 煙塵滾滾','🌧 大雨','⛅ 風停','☀ 天晴'];
+  var weathers=['☀ 晴天','☁ 陰天','🌧 小雨','🌫 濃霧','風 東南風','火 烈火','火 煙塵','🌧 大雨','⛅ 風停','☀ 天晴'];
   document.getElementById('weather').textContent=weathers[Math.min(weathers.length-1,Math.floor(p*10))];
 
+  // 軍力
   var cp=Math.max(5,100-p*140);
   var sp=Math.min(80,55+p*40);
   var lp=Math.min(60,22+p*55);
   document.getElementById('cao-bar').style.width=cp+'%';
   document.getElementById('sun-bar').style.width=sp+'%';
   document.getElementById('liu-bar').style.width=lp+'%';
-  document.getElementById('cao-num').textContent=Math.floor(830000*cp/100).toLocaleString();
-  document.getElementById('sun-num').textContent=Math.floor(50000*sp/55).toLocaleString();
+  document.getElementById('cao-num').textContent=Math.floor(200000*cp/100).toLocaleString();
+  document.getElementById('sun-num').textContent=Math.floor(30000*sp/55).toLocaleString();
   document.getElementById('liu-num').textContent=Math.floor(20000*lp/22).toLocaleString();
 
+  // 位置
+  var caoLocs=['荊州','江陵','夏口上游','烏林','烏林','烏林','赤壁','華容道','北方'];
+  var sunLocs=['柴桑','柴桑','江面','江夏','赤壁','赤壁','赤壁','赤壁','烏林'];
+  var liuLocs=['新野','長坂坡','長坂坡','夏口','夏口','赤壁','赤壁','赤壁','烏林'];
+  var locIdx=Math.min(8,Math.floor(p*9));
+  document.getElementById('cao-loc').textContent=caoLocs[locIdx];
+  document.getElementById('sun-loc').textContent=sunLocs[locIdx];
+  document.getElementById('liu-loc').textContent=liuLocs[locIdx];
+
   // 計策彈窗
-  if(curEv.strat && p>=curEv.t && p<curEv.t+0.05){
-    var stratEl=document.getElementById('strategy-popup');
-    stratEl.textContent=curEv.strat;
-    stratEl.style.opacity='1';
-    strategyTimer=180;
+  var strats={0.50:'鏈 連環計 — 鐵鏈連船！',0.55:'劍 苦肉計 — 黃蓋詐降！',0.60:'風 東南大風起！',0.65:'火 火攻！赤壁燒燬！',0.90:'義 關羽義釋曹操！',0.95:'冠 三足鼎立！'};
+  for(var sk in strats){
+    if(p>=parseFloat(sk)&&p<parseFloat(sk)+0.05){
+      document.getElementById('strategy-popup').textContent=strats[sk];
+      document.getElementById('strategy-popup').style.opacity='1';
+      strategyTimer=180;
+    }
   }
 }
 
 function drawMinimap(){
   var cv=document.getElementById('mm-cv');
   var ctx=cv.getContext('2d');
-  cv.width=130;cv.height=72;
-  ctx.fillStyle='#0a1a2a';ctx.fillRect(0,0,130,72);
-  ctx.fillStyle='#1a3a5a';ctx.fillRect(0,20,130,28);
-  var mx=function(x){return(x/1200+0.5)*130;};
-  var mz=function(z){return(-z/900+0.5)*72;};
+  cv.width=160;cv.height=90;
+  ctx.fillStyle='#0a1a2a';ctx.fillRect(0,0,160,90);
+  // 長江
+  ctx.fillStyle='#1a3a5a';ctx.fillRect(65,0,30,90);
+  ctx.font='6px sans-serif';ctx.fillStyle='#6699cc';ctx.fillText('長江',70,45);
+  // 北岸
+  ctx.fillStyle='#1a3a1a';ctx.fillRect(100,0,60,90);
+  ctx.fillStyle='#889999';ctx.fillText('烏林',110,50);
+  ctx.fillText('華容道',110,20);
+  // 南岸
+  ctx.fillStyle='#1a3a1a';ctx.fillRect(0,0,65,90);
+  ctx.fillStyle='#889999';ctx.fillText('赤壁',20,50);
+  ctx.fillText('夏口',20,80);
+
+  var mx=function(x){return(x/600+0.5)*160;};
+  var mz=function(z){return(-z/800+0.5)*90;};
   var colors={cao:'#4488ff',sun:'#ff4444',liu:'#44cc44'};
   allShips.forEach(function(u){ctx.fillStyle=colors[u.army];ctx.fillRect(mx(u.x)-1,mz(u.z)-1,2,2);});
+  // 關羽
+  if(guanYuGroup.visible){ctx.fillStyle='#44cc44';ctx.fillRect(mx(250)-2,mz(-250)-2,4,4);}
+  // 相機
   ctx.strokeStyle='#ffa500';ctx.lineWidth=1;
   ctx.strokeRect(mx(camera.position.x)-3,mz(camera.position.z)-3,6,6);
 }
@@ -987,15 +945,12 @@ var thumb=document.getElementById('t-thumb');
 var track=document.getElementById('t-track');
 var dragging=false;
 
-function syncUI(){fill.style.width=progress*100+'%';thumb.style.left=progress*100+'%';updatePhase(progress);}
-
 function togglePlay(){
   playing=!playing;
   btnPlay.textContent=playing?'⏸ 暫停':'▶ 播放';
   btnPlay.className=playing?'on':'';
   if(playing){camTransitioning=false;userCam=false;}
 }
-
 function speedBy(d){speed=Math.max(0.25,Math.min(4,speed+d*0.25));}
 
 function toggleAudio(){
@@ -1021,7 +976,6 @@ function startBattle(){
   sndHorn(3,0.2);
 }
 
-// 事件綁定
 document.getElementById('intro').addEventListener('click',startBattle);
 document.getElementById('intro').addEventListener('touchend',function(e){e.preventDefault();startBattle();});
 btnPlay.addEventListener('click',togglePlay);
@@ -1035,8 +989,8 @@ document.addEventListener('mouseup',function(){dragging=false;});
 track.addEventListener('touchstart',function(e){dragging=true;slideT(e);});
 document.addEventListener('touchmove',function(e){if(dragging)slideT(e);});
 document.addEventListener('touchend',function(){dragging=false;});
-function slide(e){var r=track.getBoundingClientRect();progress=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));fireDone=false;windDone=false;battleStarted=false;syncUI();}
-function slideT(e){var r=track.getBoundingClientRect();var t=e.touches[0]||e.changedTouches[0];progress=Math.max(0,Math.min(1,(t.clientX-r.left)/r.width));fireDone=false;windDone=false;battleStarted=false;syncUI();}
+function slide(e){var r=track.getBoundingClientRect();progress=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));fireDone=false;windDone=false;syncUI();}
+function slideT(e){var r=track.getBoundingClientRect();var t=e.touches[0]||e.changedTouches[0];progress=Math.max(0,Math.min(1,(t.clientX-r.left)/r.width));fireDone=false;windDone=false;syncUI();}
 
 document.addEventListener('keydown',function(e){
   if(e.code==='Space'){e.preventDefault();togglePlay();}
@@ -1048,7 +1002,6 @@ controls.addEventListener('start',function(){userCam=true;});
 var camTimeout;
 controls.addEventListener('end',function(){clearTimeout(camTimeout);camTimeout=setTimeout(function(){if(playing){userCam=false;}},4000);});
 
-// 點擊將領
 var ray=new THREE.Raycaster();
 var mouse=new THREE.Vector2();
 renderer.domElement.addEventListener('click',function(e){
@@ -1076,6 +1029,8 @@ window.addEventListener('resize',function(){
   renderer.setSize(innerWidth,innerHeight);
 });
 
+function syncUI(){fill.style.width=progress*100+'%';thumb.style.left=progress*100+'%';updatePhase(progress);}
+
 /* ========================================================
    主循環
    ======================================================== */
@@ -1086,7 +1041,6 @@ function animate(){
   var T=clock.getElapsedTime();
   frameCount++;
 
-  // 推進
   if(playing&&progress<1){
     progress+=0.0002*speed;
     if(progress>=1){progress=1;playing=false;btnPlay.textContent='↻ 重播';btnPlay.className='';}
@@ -1096,50 +1050,50 @@ function animate(){
 
   updatePhase(progress);
   moveShips(progress);
-  updateSoldiers(progress);
   updateLighting(progress);
   animateWater(T);
   updateParticles();
 
-  // 火攻觸發
-  if(progress>=0.55&&!fireDone){
+  // 火攻觸發 - 船都到了烏林和赤壁後才發生
+  if(progress>=0.65&&!fireDone){
     fireDone=true;
-    // 火船爆炸
+    // 吳軍火船衝入曹軍
     caoShips.forEach(function(u,i){
-      setTimeout(function(){spawnExplosion(u.x,2,u.z);},i*60);
+      setTimeout(function(){spawnExplosion(u.x,2,u.z);},i*50);
     });
     // 持續火攻
     (function(){
       var fl=setInterval(function(){
-        if(progress>=0.55&&progress<=0.7&&audioOn){
-          spawnFire(-100+(Math.random()-0.5)*120, 2, -300+(Math.random()-0.5)*60);
-          if(frameCount%10===0)sndFire();
+        if(progress>=0.65&&progress<=0.75&&audioOn){
+          spawnFire(100+(Math.random()-0.5)*80, 2, -120+(Math.random()-0.5)*50);
+          if(frameCount%8===0)sndFire();
         }else clearInterval(fl);
-      },400);
+      },300);
     })();
   }
 
-  // 箭雨
-  if(progress>=0.4&&progress<0.45&&frameCount%60===0){
-    arrowRain(15, -50, 200, 200);
+  // 箭矢（隔江射擊）
+  if(progress>=0.45&&progress<0.5&&frameCount%40===0){
+    for(var i=0;i<8;i++){
+      shootArrow(-80+Math.random()*40, 5, 30+Math.random()*20, 80+Math.random()*40, 3, -120+Math.random()*20);
+    }
   }
 
-  // 風
-  if(progress>=0.45&&!windDone){windDone=true;sndWind(0.15);}
+  // 東風
+  if(progress>=0.6&&!windDone){windDone=true;sndWind(0.15);}
 
   // 閃電
-  if(progress>=0.75&&progress<=0.85&&frameCount%100===0)flashLightning();
+  if(progress>=0.85&&progress<=0.92&&frameCount%100===0)flashLightning();
 
-  // 戰鬥音效
+  // 音效階段
   var phase=Math.floor(progress*10);
   if(phase!==lastSoundPhase){
     lastSoundPhase=phase;
     if(phase<=3)sndDrum(70,0.5,0.2);
-    else if(phase<=6&&audioOn){sndFire();sndDrum(40,0.8,0.25);}
-    else if(phase<=8)sndDrum(50,0.6,0.15);
+    else if(phase<=7&&audioOn){sndFire();sndDrum(40,0.8,0.25);}
+    else if(phase<=9)sndDrum(50,0.6,0.15);
   }
 
-  // 計策彈窗
   if(strategyTimer>0){strategyTimer--;if(strategyTimer<=0)document.getElementById('strategy-popup').style.opacity='0';}
 
   selectCamera(progress);
@@ -1153,7 +1107,7 @@ function animate(){
 
 animate();
 
-})(); // end IIFE
+})();
 </script>
 </body>
 </html>
