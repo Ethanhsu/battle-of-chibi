@@ -10,69 +10,73 @@ body{overflow:hidden;background:#000;font-family:'Microsoft JhengHei','Noto Sans
 canvas{display:block;}
 #ui{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
 
-#intro{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 60%,#1a0a00 0%,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;cursor:pointer;transition:opacity 2s;}
-#intro .dynasty{font-size:16px;color:#8b7355;letter-spacing:12px;margin-bottom:20px;}
-#intro h1{font-size:clamp(48px,10vw,96px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.5),0 0 120px rgba(255,50,0,0.2);letter-spacing:20px;margin-bottom:10px;}
-#intro .year{font-size:clamp(16px,3vw,24px);color:#b89060;letter-spacing:6px;margin-bottom:30px;}
-#intro .desc{color:#8b7355;font-size:14px;max-width:500px;text-align:center;line-height:1.8;margin-top:10px;}
-#intro .prompt{font-size:14px;color:#665540;animation:pulse 2s infinite;margin-top:20px;}
-@keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+#intro{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;cursor:pointer;}
+#intro .bg{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 50%,#1a0800 0%,#000 70%);}
+#intro>*{position:relative;z-index:1;}
+#intro .dynasty{font-size:16px;color:#8b7355;letter-spacing:16px;margin-bottom:24px;opacity:0;animation:fadeUp 1.5s 0.3s forwards;}
+#intro h1{font-size:clamp(48px,10vw,96px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.5),0 0 120px rgba(255,50,0,0.2);letter-spacing:24px;margin-bottom:10px;opacity:0;animation:fadeUp 1.5s 0.8s forwards;}
+#intro .year{font-size:clamp(16px,3vw,24px);color:#b89060;letter-spacing:6px;margin-bottom:30px;opacity:0;animation:fadeUp 1.5s 1.3s forwards;}
+#intro .desc{color:#8b7355;font-size:14px;max-width:500px;text-align:center;line-height:1.8;margin-top:10px;opacity:0;animation:fadeUp 1.5s 1.8s forwards;}
+#intro .prompt{font-size:14px;color:#665540;animation:pulse 2s 2.8s infinite;margin-top:24px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
 
-#header{position:absolute;top:0;left:0;width:100%;padding:10px 20px;background:linear-gradient(180deg,rgba(0,0,0,0.7) 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;z-index:10;}
+#header{position:absolute;top:0;left:0;width:100%;padding:10px 20px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;z-index:10;}
 #header h1{font-size:18px;color:#c8a060;letter-spacing:6px;text-shadow:0 2px 8px #000;}
 #header .phase{font-size:14px;color:#ffd700;text-shadow:0 0 10px rgba(255,180,0,0.5);}
 
-#weather{position:absolute;top:50px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:4px 16px;border-radius:16px;font-size:13px;z-index:10;white-space:nowrap;}
+#weather{position:absolute;top:48px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:4px 16px;border-radius:16px;font-size:13px;z-index:10;white-space:nowrap;}
 
-#armies{position:absolute;top:80px;left:12px;z-index:10;pointer-events:auto;}
-.army-row{display:flex;align-items:center;gap:8px;margin:6px 0;padding:8px 12px;background:rgba(0,0,0,0.6);border-radius:8px;border-left:3px solid;font-size:12px;min-width:200px;}
-.army-row.cao{border-color:#4488ff;}
-.army-row.sun{border-color:#ff4444;}
-.army-row.liu{border-color:#44cc44;}
-.army-row .name{font-weight:bold;min-width:50px;}
-.army-row.cao .name{color:#6699ff;}
-.army-row.sun .name{color:#ff6666;}
-.army-row.liu .name{color:#66dd66;}
-.army-row .bar{width:80px;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
-.army-row .bar-f{height:100%;border-radius:3px;transition:width 0.8s;}
-.army-row.cao .bar-f{background:#4488ff;}
-.army-row.sun .bar-f{background:#ff4444;}
-.army-row.liu .bar-f{background:#44cc44;}
-.army-row .count{color:#999;font-size:11px;min-width:60px;text-align:right;}
+#armies{position:absolute;top:76px;left:12px;z-index:10;}
+.army-row{display:flex;align-items:center;gap:8px;margin:4px 0;padding:6px 10px;background:rgba(0,0,0,0.6);border-radius:6px;border-left:3px solid;font-size:12px;min-width:190px;}
+.army-row.cao{border-color:#4488ff;}.army-row.sun{border-color:#ff4444;}.army-row.liu{border-color:#44cc44;}
+.army-row .name{font-weight:bold;min-width:45px;}.army-row.cao .name{color:#6699ff;}.army-row.sun .name{color:#ff6666;}.army-row.liu .name{color:#66dd66;}
+.army-row .bar{width:70px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.army-row .bar-f{height:100%;border-radius:2px;transition:width 0.8s;}
+.army-row.cao .bar-f{background:#4488ff;}.army-row.sun .bar-f{background:#ff4444;}.army-row.liu .bar-f{background:#44cc44;}
+.army-row .count{color:#999;font-size:10px;min-width:55px;text-align:right;}
 
-#events{position:absolute;top:80px;right:12px;width:260px;max-height:calc(100vh - 200px);overflow-y:auto;background:rgba(0,0,0,0.6);border-radius:10px;padding:12px;z-index:10;}
-#events h3{font-size:13px;color:#c8a060;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.1);}
-.ev{padding:5px 0;font-size:11px;line-height:1.5;color:#665;border-bottom:1px solid rgba(255,255,255,0.04);}
-.ev.on{color:#ffd700;font-weight:bold;font-size:12px;}
-.ev .et{color:#555;font-size:10px;margin-right:6px;}
+#events{position:absolute;top:76px;right:12px;width:240px;max-height:calc(100vh - 180px);overflow-y:auto;background:rgba(0,0,0,0.6);border-radius:8px;padding:10px;z-index:10;}
+#events h3{font-size:13px;color:#c8a060;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.ev{padding:4px 0;font-size:11px;line-height:1.4;color:#554;border-bottom:1px solid rgba(255,255,255,0.03);}
+.ev.on{color:#ffd700;font-weight:bold;}
+.ev .et{color:#444;font-size:10px;margin-right:4px;}
 
-#legend{position:absolute;bottom:90px;right:12px;background:rgba(0,0,0,0.7);border-radius:8px;padding:8px 12px;font-size:11px;z-index:10;}
+#legend{position:absolute;bottom:84px;right:12px;background:rgba(0,0,0,0.7);border-radius:6px;padding:6px 10px;font-size:10px;z-index:10;}
 #legend div{margin:2px 0;display:flex;align-items:center;gap:6px;}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
-#minimap{position:absolute;bottom:90px;left:12px;width:140px;height:80px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:6px;z-index:10;overflow:hidden;}
+#minimap{position:absolute;bottom:84px;left:12px;width:130px;height:72px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:6px;z-index:10;overflow:hidden;}
 #minimap canvas{width:100%;height:100%;}
 
-#cam-hint{position:absolute;bottom:74px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.3);z-index:10;white-space:nowrap;}
+#cam-hint{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.25);z-index:10;white-space:nowrap;}
 
-#strategy-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(24px,5vw,48px);color:#ffd700;text-shadow:0 0 40px rgba(255,100,0,0.8),0 0 80px rgba(255,50,0,0.4);pointer-events:none;z-index:50;opacity:0;transition:opacity 0.5s;letter-spacing:8px;white-space:nowrap;}
+#strategy-popup{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);font-size:clamp(28px,6vw,56px);color:#ffd700;text-shadow:0 0 60px rgba(255,100,0,0.8),0 0 120px rgba(255,50,0,0.4),0 4px 8px #000;pointer-events:none;z-index:50;opacity:0;transition:opacity 0.4s;letter-spacing:10px;white-space:nowrap;}
+
+#cam-name{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(16px,2.5vw,24px);color:rgba(200,160,96,0.9);text-shadow:0 2px 12px #000;pointer-events:none;z-index:45;opacity:0;transition:opacity 0.6s;letter-spacing:6px;}
 
 #audio-btn{position:absolute;top:12px;right:12px;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;pointer-events:auto;}
 
-#timeline{position:absolute;bottom:0;left:0;width:100%;height:64px;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.3) 80%,transparent 100%);display:flex;align-items:center;padding:0 16px;z-index:10;gap:12px;}
-#timeline button{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:5px 12px;border-radius:5px;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap;pointer-events:auto;}
+#timeline{position:absolute;bottom:0;left:0;width:100%;height:58px;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 80%,transparent 100%);display:flex;align-items:center;padding:0 14px;z-index:10;gap:10px;}
+#timeline button{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:11px;font-family:inherit;white-space:nowrap;pointer-events:auto;}
 #timeline button:hover{background:rgba(255,255,255,0.2);}
 #timeline button.on{background:rgba(255,150,0,0.3);border-color:#c89030;}
-#t-track{flex:1;height:5px;background:rgba(255,255,255,0.12);border-radius:3px;position:relative;cursor:pointer;}
-#t-fill{height:100%;background:linear-gradient(90deg,#4488ff,#ffa500,#ff4400);border-radius:3px;width:0%;}
-#t-thumb{position:absolute;top:-6px;width:16px;height:17px;background:#ffd700;border-radius:8px;border:2px solid #8b6914;left:0%;transform:translateX(-50%);cursor:grab;}
-#t-label{position:absolute;top:14px;left:0;width:100%;display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.3);pointer-events:none;}
-#t-time{font-size:12px;color:#c8a060;min-width:80px;text-align:center;white-space:nowrap;}
+#t-track{flex:1;height:4px;background:rgba(255,255,255,0.12);border-radius:2px;position:relative;cursor:pointer;}
+#t-fill{height:100%;background:linear-gradient(90deg,#4488ff,#ffa500,#ff4400);border-radius:2px;width:0%;}
+#t-thumb{position:absolute;top:-5px;width:14px;height:15px;background:#ffd700;border-radius:7px;border:2px solid #8b6914;left:0%;transform:translateX(-50%);cursor:grab;}
+#t-label{position:absolute;top:12px;left:0;width:100%;display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,0.3);pointer-events:none;}
+#t-time{font-size:11px;color:#c8a060;min-width:75px;text-align:center;white-space:nowrap;}
+
+/* 戰鬥傷害數字 */
+#dmg-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20;}
+.dmg-num{position:absolute;font-size:16px;font-weight:bold;color:#ff4444;text-shadow:0 0 4px #000,0 2px 4px #000;pointer-events:none;animation:dmgFloat 1.2s forwards;}
+@keyframes dmgFloat{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-40px) scale(0.5);}}
 </style>
 </head>
 <body>
 
 <div id="intro">
+  <div class="bg"></div>
   <div class="dynasty">三 國 時 代</div>
   <h1>赤壁之戰</h1>
   <div class="year">建安十三年 公元 208 年</div>
@@ -107,6 +111,7 @@ canvas{display:block;}
   </div>
   <div id="minimap"><canvas id="mm-cv"></canvas></div>
   <div id="strategy-popup"></div>
+  <div id="cam-name"></div>
   <div id="cam-hint">滑鼠左鍵旋轉 · 右鍵平移 · 滾輪縮放</div>
 
   <div id="timeline">
@@ -121,6 +126,7 @@ canvas{display:block;}
     <div id="t-time">建安十三年冬</div>
   </div>
 </div>
+<div id="dmg-overlay"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/controls/OrbitControls.js"></script>
@@ -128,10 +134,13 @@ canvas{display:block;}
 (function(){
 "use strict";
 
-/* ====== 場景 ====== */
+/* ========================================================
+   赤壁之戰 3D 戰鬥場景
+   ======================================================== */
+
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050510);
-scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0006);
+scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0005);
 
 var camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 1, 3000);
 var renderer = new THREE.WebGLRenderer({antialias:true, powerPreference:'low-power'});
@@ -144,11 +153,11 @@ document.body.appendChild(renderer.domElement);
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.04;
-controls.maxPolarAngle = Math.PI*0.46;
-controls.minDistance = 80;
-controls.maxDistance = 800;
+controls.maxPolarAngle = Math.PI*0.48;
+controls.minDistance = 30;
+controls.maxDistance = 1200;
 controls.target.set(0,0,-50);
-camera.position.set(0, 250, 400);
+camera.position.set(0, 300, 450);
 
 /* ====== 光照 ====== */
 var ambLight = new THREE.AmbientLight(0x334455, 0.5);
@@ -157,39 +166,42 @@ var sunLight = new THREE.DirectionalLight(0xffeedd, 1);
 sunLight.position.set(200,300,100);
 sunLight.castShadow = true;
 sunLight.shadow.mapSize.set(1024,1024);
-sunLight.shadow.camera.left=-400; sunLight.shadow.camera.right=400;
-sunLight.shadow.camera.top=400; sunLight.shadow.camera.bottom=-400;
+sunLight.shadow.camera.left=-500; sunLight.shadow.camera.right=500;
+sunLight.shadow.camera.top=500; sunLight.shadow.camera.bottom=-500;
 scene.add(sunLight);
 scene.add(new THREE.HemisphereLight(0x6688aa, 0x443322, 0.3));
 
 /* ====== 地形 ====== */
-var waterGeo = new THREE.PlaneGeometry(2000, 900, 50, 25);
-var waterMat = new THREE.MeshPhongMaterial({color:0x0a2a4a, shininess:100, specular:0x3355aa, transparent:true, opacity:0.85});
+// 長江
+var waterGeo = new THREE.PlaneGeometry(2400, 800, 60, 25);
+var waterMat = new THREE.MeshPhongMaterial({color:0x0a2a4a, shininess:120, specular:0x3355aa, transparent:true, opacity:0.85});
 var water = new THREE.Mesh(waterGeo, waterMat);
 water.rotation.x = -Math.PI/2;
 water.receiveShadow = true;
 scene.add(water);
 
+// 北岸 (曹)
 function makeBank(w, d, z) {
-  var g = new THREE.PlaneGeometry(w, d, 25, 6);
+  var g = new THREE.PlaneGeometry(w, d, 30, 8);
   var p = g.attributes.position;
-  for(var i=0;i<p.count;i++) p.setZ(i, 4+Math.random()*3);
+  for(var i=0;i<p.count;i++) p.setZ(i, 3+Math.random()*2.5);
   g.computeVertexNormals();
-  var m = new THREE.MeshPhongMaterial({color:0x2a4a1a, flatShading:true});
-  var mesh = new THREE.Mesh(g, m);
+  var mesh = new THREE.Mesh(g, new THREE.MeshPhongMaterial({color:0x2a4a1a, flatShading:true}));
   mesh.rotation.x = -Math.PI/2;
   mesh.position.set(0, 0.5, z);
   mesh.receiveShadow = true;
   scene.add(mesh);
 }
-makeBank(2000, 180, -400);
-makeBank(2000, 200, 380);
+makeBank(2400, 200, -420);
+makeBank(2400, 220, 380);
 
-var hill = new THREE.Mesh(new THREE.ConeGeometry(35, 45, 6, 3), new THREE.MeshPhongMaterial({color:0x8b4513, flatShading:true}));
-hill.position.set(80, 12, 340);
+// 赤壁山
+var hill = new THREE.Mesh(new THREE.ConeGeometry(40, 50, 6, 3), new THREE.MeshPhongMaterial({color:0x8b4513, flatShading:true}));
+hill.position.set(120, 15, 340);
 hill.castShadow = true;
 scene.add(hill);
 
+// 標籤
 function addLabel(text, x, y, z, color, sz) {
   sz = sz || 1;
   var c = document.createElement('canvas');
@@ -197,35 +209,44 @@ function addLabel(text, x, y, z, color, sz) {
   c.width = 512; c.height = 128;
   ctx.font = 'bold 34px "Microsoft JhengHei","Noto Sans TC",sans-serif';
   ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillText(text,257,65);
+  ctx.fillStyle='rgba(0,0,0,0.8)'; ctx.fillText(text,257,65);
   ctx.fillStyle='#'+color.toString(16).padStart(6,'0'); ctx.fillText(text,256,64);
   var tex = new THREE.CanvasTexture(c);
   var sp = new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));
   sp.position.set(x,y,z); sp.scale.set(70*sz,17.5*sz,1);
   scene.add(sp);
 }
-addLabel('赤壁', 80, 55, 340, 0xff6644, 1.2);
-addLabel('長江', -180, 6, 0, 0x6699cc);
-addLabel('烏林', -180, 6, -380, 0x889999);
-addLabel('夏口', -450, 6, -180, 0x889999);
-addLabel('荊州', -650, 6, -300, 0x889999);
-addLabel('華容道', -380, 6, 180, 0x889999);
+addLabel('赤壁', 120, 60, 340, 0xff6644, 1.3);
+addLabel('長江', -200, 6, 0, 0x6699cc);
+addLabel('烏林', -200, 6, -400, 0x889999);
+addLabel('華容道', -400, 6, 150, 0x889999);
 
-/* ====== 船艦 ====== */
-function makeShip(color) {
+/* ========================================================
+   船艦系統
+   ======================================================== */
+function makeShip(color, isFlagship) {
   var g = new THREE.Group();
-  var hull = new THREE.Mesh(new THREE.BoxGeometry(6, 2.5, 16), new THREE.MeshPhongMaterial({color:0x7a6040}));
+  var scale = isFlagship ? 1.5 : 0.8;
+  // 船體
+  var hull = new THREE.Mesh(
+    new THREE.BoxGeometry(6*scale, 2.5*scale, 16*scale),
+    new THREE.MeshPhongMaterial({color:0x7a6040})
+  );
   hull.castShadow = true;
   g.add(hull);
-  var deck = new THREE.Mesh(new THREE.BoxGeometry(5.5,0.4,15), new THREE.MeshPhongMaterial({color:0x9a8060}));
-  deck.position.y = 1.45;
+  // 甲板
+  var deck = new THREE.Mesh(new THREE.BoxGeometry(5.5*scale,0.4*scale,15*scale), new THREE.MeshPhongMaterial({color:0x9a8060}));
+  deck.position.y = 1.45*scale;
   g.add(deck);
-  var mast = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,12,4), new THREE.MeshPhongMaterial({color:0x5a4230}));
-  mast.position.y = 7.5;
+  // 桅杆
+  var mast = new THREE.Mesh(new THREE.CylinderGeometry(0.2*scale,0.2*scale,12*scale,4), new THREE.MeshPhongMaterial({color:0x5a4230}));
+  mast.position.y = 7.5*scale;
   g.add(mast);
-  var sail = new THREE.Mesh(new THREE.PlaneGeometry(5,8), new THREE.MeshPhongMaterial({color:color,side:THREE.DoubleSide,transparent:true,opacity:0.8}));
-  sail.position.y = 7.5;
+  // 帆
+  var sail = new THREE.Mesh(new THREE.PlaneGeometry(5*scale,8*scale), new THREE.MeshPhongMaterial({color:color,side:THREE.DoubleSide,transparent:true,opacity:0.8}));
+  sail.position.y = 7.5*scale;
   g.add(sail);
+  // 旗幟
   var fc = document.createElement('canvas');
   fc.width=128; fc.height=96;
   var f=fc.getContext('2d');
@@ -233,117 +254,309 @@ function makeShip(color) {
   f.fillRect(0,0,128,96);
   f.fillStyle='#fff'; f.font='bold 50px sans-serif'; f.textAlign='center'; f.textBaseline='middle';
   f.fillText(color===0x4488ff?'曹':color===0xff4444?'孫':'劉', 64, 48);
-  var flag = new THREE.Mesh(new THREE.PlaneGeometry(3.5,2.5), new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc),side:THREE.DoubleSide}));
-  flag.position.y = 13.5;
+  var flag = new THREE.Mesh(new THREE.PlaneGeometry(3.5*scale,2.5*scale), new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc),side:THREE.DoubleSide}));
+  flag.position.y = 13.5*scale;
   g.add(flag);
   return g;
 }
 
-var cao=[], sun=[], liu=[];
+var caoShips=[], sunShips=[], liuShips=[];
+var allShips = [];
 
-function deployArmy(arr, army, color, cx, cz, cols, rows, spread) {
+function deployShips(arr, army, color, cx, cz, cols, rows, spread) {
   for(var i=0;i<cols*rows;i++){
     var col=i%cols, row=Math.floor(i/cols);
-    var ox = cx + (col-cols/2)*spread + (Math.random()-0.5)*10;
-    var oz = cz + (row-rows/2)*spread*0.8 + (Math.random()-0.5)*8;
-    var ship = makeShip(color);
+    var ox = cx+(col-cols/2)*spread+(Math.random()-0.5)*8;
+    var oz = cz+(row-rows/2)*spread*0.7+(Math.random()-0.5)*6;
+    var ship = makeShip(color, (col===Math.floor(cols/2)&&row===Math.floor(rows/2)));
     ship.position.set(ox,0,oz);
     scene.add(ship);
-    var u = {mesh:ship, army:army, ox:ox, oz:oz, x:ox, z:oz, tx:ox, tz:oz, idx:i};
+    var u = {mesh:ship, army:army, ox:ox, oz:oz, x:ox, z:oz, tx:ox, tz:oz, idx:i, burning:false};
     arr.push(u);
+    allShips.push(u);
   }
 }
-deployArmy(cao, 'cao', 0x4488ff, -100, -280, 8, 6, 30);
-deployArmy(sun, 'sun', 0xff4444, 0, 300, 5, 5, 30);
-deployArmy(liu, 'liu', 0x44cc44, -50, 370, 4, 3, 30);
+deployShips(caoShips, 'cao', 0x4488ff, -100, -300, 10, 5, 25);
+deployShips(sunShips, 'sun', 0xff4444, 0, 280, 6, 4, 25);
+deployShips(liuShips, 'liu', 0x44cc44, -60, 360, 4, 3, 25);
 
-/* ====== 將領 ====== */
+/* ========================================================
+   士兵系統 — 短兵相接的關鍵
+   ======================================================== */
+var soldiers = [];
+var soldierGeos = {};
+
+function getSoldierGeo(color) {
+  var key = color.toString(16);
+  if(!soldierGeos[key]) {
+    soldierGeos[key] = new THREE.BoxGeometry(1, 2.5, 1);
+    soldierGeos[key].material = new THREE.MeshPhongMaterial({color:color});
+  }
+  return soldierGeos[key];
+}
+
+function createSoldier(color, x, y, z, army) {
+  var body = new THREE.Mesh(
+    new THREE.BoxGeometry(0.8, 2.2, 0.6),
+    new THREE.MeshPhongMaterial({color:color})
+  );
+  body.position.set(x, y+1.1, z);
+  body.castShadow = true;
+  scene.add(body);
+  // 武器 (劍/矛)
+  var weapon = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.05, 0.05, 2.5, 3),
+    new THREE.MeshPhongMaterial({color:0xcccccc})
+  );
+  weapon.position.set(x+0.5, y+1.8, z);
+  weapon.rotation.z = 0.3;
+  scene.add(weapon);
+  soldiers.push({
+    body: body, weapon: weapon,
+    x:x, y:y, z:z, army:army,
+    tx:x, tz:z,
+    alive: true,
+    attacking: false,
+    attackTimer: 0,
+    color: color
+  });
+}
+
+// 曹軍士兵
+function deploySoldiers() {
+  // 曹軍北岸
+  for(var i=0;i<60;i++){
+    createSoldier(0x3366cc,
+      -150+Math.random()*200, 3, -390-Math.random()*40, 'cao');
+  }
+  // 曹軍船上
+  for(var i=0;i<40;i++){
+    var s = caoShips[i%caoShips.length];
+    createSoldier(0x3366cc, s.ox+(Math.random()-0.5)*20, 2.5, s.oz+(Math.random()-0.5)*10, 'cao');
+  }
+  // 吳軍南岸
+  for(var i=0;i<40;i++){
+    createSoldier(0xcc3333,
+      -50+Math.random()*150, 3, 350+Math.random()*30, 'sun');
+  }
+  // 吳軍船上
+  for(var i=0;i<25;i++){
+    var s = sunShips[i%sunShips.length];
+    createSoldier(0xcc3333, s.ox+(Math.random()-0.5)*15, 2.5, s.oz+(Math.random()-0.5)*8, 'sun');
+  }
+  // 劉備軍
+  for(var i=0;i<20;i++){
+    createSoldier(0x339933,
+      -80+Math.random()*100, 3, 370+Math.random()*30, 'liu');
+  }
+}
+deploySoldiers();
+
+/* ========================================================
+   箭矢系統
+   ======================================================== */
+var arrows = [];
+
+function shootArrow(fromX, fromY, fromZ, toX, toY, toZ, color) {
+  var arrow = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.05, 0.05, 1.5, 3),
+    new THREE.MeshBasicMaterial({color:color || 0xffff88})
+  );
+  arrow.position.set(fromX, fromY, fromZ);
+  var dir = new THREE.Vector3(toX-fromX, toY-fromY, toZ-fromZ).normalize();
+  var speed = 3+Math.random()*2;
+  arrows.push({
+    mesh: arrow,
+    vx: dir.x*speed, vy: dir.y*speed, vz: dir.z*speed,
+    life: 1, color: color || 0xffff88
+  });
+  scene.add(arrow);
+}
+
+function arrowRain(count, fromZ, toZ, spread) {
+  for(var i=0;i<count;i++){
+    shootArrow(
+      (Math.random()-0.5)*spread, 15+Math.random()*10, fromZ+(Math.random()-0.5)*20,
+      (Math.random()-0.5)*spread, 2, toZ+(Math.random()-0.5)*20,
+      0xffaa44
+    );
+  }
+}
+
+/* ========================================================
+   火攻粒子
+   ======================================================== */
+var fireParticles = [];
+var smokeParticles = [];
+
+function spawnFire(x, y, z) {
+  for(var i=0;i<15;i++){
+    var s = 0.3+Math.random()*1.5;
+    var m = new THREE.Mesh(
+      new THREE.SphereGeometry(s,4,4),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color().setHSL(0.04+Math.random()*0.08, 1, 0.4+Math.random()*0.3),
+        transparent:true, opacity:0.9
+      })
+    );
+    m.position.set(x+(Math.random()-0.5)*10, y+Math.random()*4, z+(Math.random()-0.5)*10);
+    scene.add(m);
+    fireParticles.push({m:m, vx:(Math.random()-0.5)*0.4, vy:0.5+Math.random()*1, vz:(Math.random()-0.5)*0.4, life:1, decay:0.004+Math.random()*0.006});
+  }
+  // 煙
+  for(var i=0;i<8;i++){
+    var s = 2+Math.random()*4;
+    var m = new THREE.Mesh(
+      new THREE.SphereGeometry(s,4,4),
+      new THREE.MeshBasicMaterial({color:0x222222, transparent:true, opacity:0.5})
+    );
+    m.position.set(x+(Math.random()-0.5)*20, y+5+Math.random()*8, z+(Math.random()-0.5)*20);
+    scene.add(m);
+    smokeParticles.push({m:m, vy:0.2+Math.random()*0.3, life:1, decay:0.002+Math.random()*0.003});
+  }
+  // 火光
+  var fl = new THREE.PointLight(0xff6600, 8, 100);
+  fl.position.set(x, y+10, z);
+  scene.add(fl);
+  setTimeout(function(){scene.remove(fl);}, 2000);
+}
+
+function spawnExplosion(x, y, z) {
+  for(var i=0;i<25;i++){
+    var angle = Math.random()*Math.PI*2;
+    var up = Math.random()*0.5;
+    var s = 0.5+Math.random()*2;
+    var m = new THREE.Mesh(
+      new THREE.SphereGeometry(s,4,4),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color().setHSL(0.06+Math.random()*0.06, 1, 0.5+Math.random()*0.3),
+        transparent:true, opacity:1
+      })
+    );
+    m.position.set(x, y, z);
+    scene.add(m);
+    var spd = 1+Math.random()*3;
+    fireParticles.push({
+      m:m, vx:Math.cos(angle)*spd, vy:up*spd+1, vz:Math.sin(angle)*spd,
+      life:1, decay:0.008+Math.random()*0.012
+    });
+  }
+  var fl = new THREE.PointLight(0xffaa00, 20, 150);
+  fl.position.set(x, y+5, z);
+  scene.add(fl);
+  setTimeout(function(){scene.remove(fl);}, 1500);
+}
+
+/* ========================================================
+   閃電
+   ======================================================== */
+function flashLightning() {
+  var pts = [];
+  var cx=(Math.random()-0.5)*600, cy=100, cz=(Math.random()-0.5)*600;
+  for(var i=0;i<8;i++){cx+=(Math.random()-0.5)*12;cy-=15+Math.random()*5;cz+=(Math.random()-0.5)*12;pts.push(new THREE.Vector3(cx,cy,cz));}
+  var ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color:0xaaccff, linewidth:2}));
+  scene.add(ln);
+  var fl = new THREE.PointLight(0xaaccff, 25, 800);
+  fl.position.set(cx,60,cz);
+  scene.add(fl);
+  setTimeout(function(){scene.remove(ln);scene.remove(fl);}, 500);
+}
+
+/* ========================================================
+   將領
+   ======================================================== */
 var generals = [];
 function addGeneral(name, title, color, x, y, z) {
   var g = new THREE.Group();
-  var glow = new THREE.Mesh(new THREE.SphereGeometry(1.8,8,8), new THREE.MeshBasicMaterial({color:color,transparent:true,opacity:0.35}));
+  // 光環
+  var glow = new THREE.Mesh(
+    new THREE.SphereGeometry(2,8,8),
+    new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4})
+  );
   g.add(glow);
-  g.add(new THREE.Mesh(new THREE.SphereGeometry(0.8,6,6), new THREE.MeshBasicMaterial({color:0xffffff})));
-  g.add(new THREE.PointLight(color, 1.5, 25));
-  addLabel(name, x, y+12, z, color, 0.8);
+  // 核心
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(1,6,6), new THREE.MeshBasicMaterial({color:0xffffff})));
+  g.add(new THREE.PointLight(color, 2, 30));
+  // 標籤
+  addLabel(name, x, y+14, z, color, 0.8);
   g.position.set(x,y,z);
   scene.add(g);
   generals.push({g:g, name:name, title:title, color:color, ox:x, oz:z});
 }
-addGeneral('曹操','魏王·83萬大軍', 0x4488ff, -100, 4, -260);
-addGeneral('周瑜','大都督·吳軍', 0xff4444, 10, 4, 290);
-addGeneral('劉備','皇叔·2萬精兵', 0x44cc44, -50, 4, 365);
-addGeneral('諸葛亮','軍師·借東風', 0x44cc44, -25, 4, 355);
-addGeneral('黃蓋','老將·火攻計', 0xff4444, 30, 4, 305);
-addGeneral('龐統','鳳雛·連環計', 0x44cc44, -120, 4, -265);
-addGeneral('關羽','萬軍取上将', 0x44cc44, -90, 4, 380);
-addGeneral('趙雲','長坂英雄', 0x44cc44, -70, 4, 385);
-addGeneral('魯肅','盟約推手', 0xff4444, 25, 4, 345);
-addGeneral('許褚','虎賁將軍', 0x4488ff, -130, 4, -270);
 
-/* ====== 粒子 ====== */
-var firePool = [];
-var smokePool = [];
+addGeneral('曹操','魏王·83萬大軍', 0x4488ff, -100, 6, -270);
+addGeneral('周瑜','大都督·吳軍', 0xff4444, 10, 6, 280);
+addGeneral('劉備','皇叔·2萬精兵', 0x44cc44, -50, 6, 365);
+addGeneral('諸葛亮','軍師·借東風', 0x44cc44, -25, 6, 355);
+addGeneral('黃蓋','老將·火攻計', 0xff4444, 30, 6, 300);
+addGeneral('龐統','鳳雛·連環計', 0x44cc44, -120, 6, -260);
+addGeneral('關羽','萬軍取上将', 0x44cc44, -90, 6, 380);
+addGeneral('趙雲','長坂英雄', 0x44cc44, -70, 6, 385);
+addGeneral('魯肅','盟約推手', 0xff4444, 25, 6, 340);
+addGeneral('許褚','虎賁將軍', 0x4488ff, -130, 6, -275);
 
-function spawnFire(x, y, z) {
-  for(var i=0;i<10;i++){
-    var s = 0.4+Math.random()*1.2;
-    var m = new THREE.Mesh(
-      new THREE.SphereGeometry(s,5,5),
-      new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(0.06+Math.random()*0.06,1,0.45+Math.random()*0.25),transparent:true,opacity:0.85})
-    );
-    m.position.set(x+(Math.random()-0.5)*12, y+Math.random()*3, z+(Math.random()-0.5)*12);
-    scene.add(m);
-    firePool.push({m:m, vx:(Math.random()-0.5)*0.3, vy:0.4+Math.random()*0.8, vz:(Math.random()-0.5)*0.3, life:1, decay:0.004+Math.random()*0.006});
-  }
-  for(var i=0;i<5;i++){
-    var s = 1.5+Math.random()*3;
-    var m = new THREE.Mesh(
-      new THREE.SphereGeometry(s,5,5),
-      new THREE.MeshBasicMaterial({color:0x333333,transparent:true,opacity:0.4})
-    );
-    m.position.set(x+(Math.random()-0.5)*16, y+4+Math.random()*8, z+(Math.random()-0.5)*16);
-    scene.add(m);
-    smokePool.push({m:m, vy:0.2+Math.random()*0.2, life:1, decay:0.002+Math.random()*0.003});
-  }
-}
-
-function flashLightning() {
-  var pts = [];
-  var cx=(Math.random()-0.5)*500, cy=80, cz=(Math.random()-0.5)*500;
-  for(var i=0;i<6;i++){cx+=(Math.random()-0.5)*8;cy-=12+Math.random()*5;cz+=(Math.random()-0.5)*8;pts.push(new THREE.Vector3(cx,cy,cz));}
-  var ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color:0xaaccff}));
-  scene.add(ln);
-  var fl = new THREE.PointLight(0xaaccff, 15, 600);
-  fl.position.set(cx,60,cz);
-  scene.add(fl);
-  setTimeout(function(){scene.remove(ln);scene.remove(fl);},400);
-}
-
-/* ====== 事件 ====== */
+/* ========================================================
+   事件軸
+   ======================================================== */
 var events = [
-  {t:0.00, lb:'曹操南下', ph:'曹操率八十萬大軍南下'},
-  {t:0.06, lb:'劉備敗退', ph:'當陽長坂坡敗退，撤往夏口'},
-  {t:0.12, lb:'孫劉聯盟', ph:'諸葛亮赴柴桑勸孫權聯合抗曹'},
-  {t:0.18, lb:'周瑜率軍', ph:'周瑜率吳軍五萬出江陵'},
-  {t:0.24, lb:'曹軍駐烏林', ph:'曹操大軍駐紮江北烏林'},
-  {t:0.30, lb:'連環計', ph:'龐統獻計，曹軍船艦鐵鏈相連', strat:'鏈 連環計發動！'},
-  {t:0.36, lb:'周瑜探軍', ph:'周瑜親率輕舟觀察曹軍'},
-  {t:0.42, lb:'苦肉計', ph:'黃蓋詐降曹操', strat:'劍 苦肉計發動！'},
-  {t:0.48, lb:'草船借箭', ph:'諸葛亮草船借箭'},
-  {t:0.54, lb:'借東風', ph:'諸葛亮祭壇借得東南大風！', strat:'風 東南風起！'},
-  {t:0.60, lb:'火船出發', ph:'黃蓋率火船衝向曹軍'},
-  {t:0.66, lb:'赤壁火攻！', ph:'火船衝入曹營！大火吞噬連環艦！', strat:'火 火攻發動！赤壁燒燬！'},
-  {t:0.72, lb:'曹軍崩潰', ph:'曹軍艦隊全線燃燒'},
-  {t:0.78, lb:'孫劉夾擊', ph:'聯軍南北夾擊大破曹軍'},
-  {t:0.82, lb:'曹操敗走', ph:'曹操率殘兵由華容道撤退'},
-  {t:0.88, lb:'華容道義釋', ph:'關羽念舊情放曹操過華容道'},
-  {t:0.92, lb:'周瑜追擊', ph:'周瑜率軍追擊至南郡'},
-  {t:0.96, lb:'三足鼎立', ph:'赤壁之戰奠定三國鼎立之局', strat:'冠 三足鼎立 天下三分'},
-  {t:1.0, lb:'天下三分', ph:'魏蜀吳三分天下，時代開啟'},
+  {t:0.00, lb:'曹操南下'},
+  {t:0.05, lb:'劉備敗退'},
+  {t:0.10, lb:'孫劉聯盟'},
+  {t:0.15, lb:'周瑜率軍'},
+  {t:0.20, lb:'曹軍駐烏林'},
+  {t:0.25, lb:'連環計', strat:'連環計 — 曹軍鐵鏈相連！'},
+  {t:0.30, lb:'周瑜探軍'},
+  {t:0.35, lb:'苦肉計', strat:'苦肉計 — 黃蓋詐降！'},
+  {t:0.40, lb:'草船借箭'},
+  {t:0.45, lb:'借東風', strat:'東南大風起！'},
+  {t:0.50, lb:'火船出發'},
+  {t:0.55, lb:'赤壁火攻！', strat:'火攻發動！赤壁燒燬！'},
+  {t:0.60, lb:'兩軍激戰！'},
+  {t:0.65, lb:'曹軍崩潰'},
+  {t:0.70, lb:'孫劉夾擊'},
+  {t:0.75, lb:'曹操敗走'},
+  {t:0.82, lb:'華容道義釋'},
+  {t:0.88, lb:'周瑜追擊'},
+  {t:0.92, lb:'三足鼎立', strat:'三足鼎立 · 天下三分！'},
+  {t:0.97, lb:'天下三分'},
 ];
 
-/* ====== 狀態 ====== */
+/* ========================================================
+   電影運鏡系統
+   ======================================================== */
+var camViews = [
+  // 每個鏡頭: {name, pos, target, duration(幀), type}
+  {name:'長江全景', pos:[0,350,300], tar:[0,0,-100], dur:180},
+  {name:'曹軍南下', pos:[-100,120,-220], tar:[-100,0,-300], dur:160},
+  {name:'劉備敗退', pos:[-40,60,400], tar:[-60,0,370], dur:140},
+  {name:'孫劉結盟', pos:[-30,40,340], tar:[-30,3,360], dur:160},
+  {name:'周瑜中軍', pos:[10,60,350], tar:[10,0,280], dur:160},
+  {name:'連環計', pos:[-80,50,-260], tar:[-100,0,-290], dur:140},
+  {name:'黃蓋詐降', pos:[30,40,330], tar:[30,3,300], dur:160},
+  {name:'東南風起', pos:[0,200,200], tar:[0,0,0], dur:200},
+  {name:'火船衝陣', pos:[40,30,250], tar:[0,0,-100], dur:160},
+  {name:'赤壁火攻！', pos:[-50,40,-200], tar:[-100,0,-280], dur:200},
+  {name:'火海煉獄', pos:[-100,25,-270], tar:[-100,5,-300], dur:180},
+  {name:'兩軍對決', pos:[0,30,100], tar:[0,0,-50], dur:200},
+  {name:'近身肉搏', pos:[0,15,80], tar:[0,2,50], dur:160},
+  {name:'曹軍崩潰', pos:[-120,60,-250], tar:[-100,0,-300], dur:160},
+  {name:'華容道', pos:[-300,80,50], tar:[-380,0,150], dur:160},
+  {name:'天下三分', pos:[0,400,200], tar:[0,0,0], dur:300},
+];
+
+var camIdx = 0;
+var camT = 0;
+var camFrom = {x:0,y:300,z:450};
+var camTo = {x:0,y:350,z:300};
+var camTarFrom = new THREE.Vector3(0,0,-50);
+var camTarTo = new THREE.Vector3(0,0,-100);
+var camTransitioning = true;
+var camHoldTimer = 0;
+var userCam = false;
+
+/* ========================================================
+   狀態
+   ======================================================== */
 var progress = 0;
 var playing = false;
 var speed = 1;
@@ -351,234 +564,290 @@ var fireDone = false;
 var windDone = false;
 var started = false;
 var audioOn = false;
-var userCam = false;
 var strategyTimer = 0;
+var battleStarted = false;
+var lastSoundPhase = -1;
+var frameCount = 0;
 
-/* ====== 電影運鏡 ====== */
-var camViews = [
-  {name:'全景俯瞰', pos:[0,350,350], tar:[0,0,-50]},
-  {name:'曹軍大營', pos:[-80,100,-200], tar:[-100,0,-280]},
-  {name:'周瑜中軍', pos:[20,80,380], tar:[10,0,300]},
-  {name:'長江對望', pos:[0,150,50], tar:[0,0,-100]},
-  {name:'側翼觀戰', pos:[150,120,100], tar:[-50,0,-100]},
-  {name:'赤壁近景', pos:[60,50,320], tar:[80,20,340]},
-  {name:'鳥瞰戰場', pos:[0,500,0], tar:[0,0,0]},
-  {name:'曹軍崩潰', pos:[-100,80,-200], tar:[-100,0,-350]},
-  {name:'敗走華容', pos:[-250,120,-50], tar:[-380,0,180]},
-  {name:'天下三分', pos:[0,400,200], tar:[0,0,0]},
-];
-var camIdx = 0;
-var camT = 0;
-var camFrom = {x:0,y:250,z:400};
-var camTo = {x:0,y:350,z:350};
-var camTarFrom = new THREE.Vector3(0,0,-50);
-var camTarTo = new THREE.Vector3(0,0,-50);
-var camTransitioning = false;
-var camHoldTimer = 0;
+/* ========================================================
+   音效
+   ======================================================== */
+var audioCtx, masterGain, bgInterval;
 
-function selectCamera(p) {
-  var idx;
-  if(p<0.08) idx=0; else if(p<0.15) idx=1; else if(p<0.25) idx=2;
-  else if(p<0.35) idx=3; else if(p<0.45) idx=4; else if(p<0.55) idx=5;
-  else if(p<0.66) idx=6; else if(p<0.78) idx=7; else if(p<0.9) idx=8; else idx=9;
-
-  if(idx !== camIdx) {
-    camIdx = idx;
-    var v = camViews[idx];
-    camFrom = {x:camera.position.x, y:camera.position.y, z:camera.position.z};
-    camTo = {x:v.pos[0], y:v.pos[1], z:v.pos[2]};
-    camTarFrom = controls.target.clone();
-    camTarTo = new THREE.Vector3(v.tar[0],v.tar[1],v.tar[2]);
-    camTransitioning = true;
-    camT = 0;
-    camHoldTimer = 0;
-    document.getElementById('phase-label').textContent = v.name + ' - ' + document.getElementById('phase-label').textContent;
-    setTimeout(function(){
-      var curEv = events[0];
-      for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){curEv=events[i];break;}}
-      document.getElementById('phase-label').textContent = curEv.lb;
-    }, 2500);
-  }
+function initAudio(){
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.3;
+  masterGain.connect(audioCtx.destination);
 }
 
-function updateCamera() {
-  if(userCam) return;
-  if(!camTransitioning && camHoldTimer < 240) {
-    camHoldTimer++;
-    var v = camViews[camIdx];
-    var T = performance.now()*0.0003;
-    camera.position.x = v.pos[0] + Math.sin(T)*5;
-    camera.position.y = v.pos[1] + Math.cos(T*0.7)*3;
-    camera.position.z = v.pos[2] + Math.sin(T*1.3)*3;
-    return;
-  }
-  if(!camTransitioning) return;
-  camT += 0.008;
-  if(camT >= 1) { camT=1; camTransitioning=false; camHoldTimer=0; }
-  var s = camT*camT*(3-2*camT);
-  camera.position.x = camFrom.x + (camTo.x-camFrom.x)*s;
-  camera.position.y = camFrom.y + (camTo.y-camFrom.y)*s;
-  camera.position.z = camFrom.z + (camTo.z-camFrom.z)*s;
-  controls.target.x = camTarFrom.x + (camTarTo.x-camTarFrom.x)*s;
-  controls.target.y = camTarFrom.y + (camTarTo.y-camTarFrom.y)*s;
-  controls.target.z = camTarFrom.z + (camTarTo.z-camTarFrom.z)*s;
+function sndDrum(freq,dur,vol){
+  if(!audioCtx)return;freq=freq||80;dur=dur||0.3;vol=vol||0.3;
+  var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type='sine';o.frequency.setValueAtTime(freq,audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(25,audioCtx.currentTime+dur);
+  g.gain.setValueAtTime(vol,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+  o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+dur);
 }
 
-/* ====== UI 更新 ====== */
-function updatePhase(p) {
-  var months = ['冬十月','冬十一月','冬十二月','建安十四年春'];
-  document.getElementById('t-time').textContent = '建安十三年' + months[Math.min(3,Math.floor(p*4))];
-
-  var curEv = events[0];
-  for(var i=events.length-1;i>=0;i--){if(p>=events[i].t){curEv=events[i];break;}}
-  if(!camTransitioning) document.getElementById('phase-label').textContent = curEv.lb;
-
-  var el = document.getElementById('ev-list');
-  el.innerHTML = '';
-  for(var i=0;i<events.length;i++){
-    var e = events[i];
-    var d = document.createElement('div');
-    d.className = 'ev' + (p>=e.t?' on':'');
-    d.innerHTML = '<span class="et">'+Math.floor(e.t*100)+'%</span>'+e.lb;
-    el.appendChild(d);
-  }
-  var active = el.querySelectorAll('.on');
-  if(active.length) active[active.length-1].scrollIntoView({block:'nearest'});
-
-  var weathers = ['☀ 東南風微弱','☁ 陰天','🌧 小雨','🌫 濃霧','風 東南風大起','火 烈火燎原','火 煙塵滾滾','🌧 大雨','⛅ 風停','☀ 天晴'];
-  document.getElementById('weather').textContent = weathers[Math.min(weathers.length-1, Math.floor(p*10))];
-
-  var cp = Math.max(5, 100-p*140);
-  var sp = Math.min(80, 55+p*40);
-  var lp = Math.min(60, 22+p*55);
-  document.getElementById('cao-bar').style.width = cp+'%';
-  document.getElementById('sun-bar').style.width = sp+'%';
-  document.getElementById('liu-bar').style.width = lp+'%';
-  document.getElementById('cao-num').textContent = Math.floor(830000*cp/100).toLocaleString();
-  document.getElementById('sun-num').textContent = Math.floor(50000*sp/55).toLocaleString();
-  document.getElementById('liu-num').textContent = Math.floor(20000*lp/22).toLocaleString();
-
-  if(curEv.strat && p >= curEv.t && p < curEv.t + 0.04) {
-    var stratEl = document.getElementById('strategy-popup');
-    stratEl.textContent = curEv.strat;
-    stratEl.style.opacity = 1;
-    strategyTimer = 180;
-  }
+function sndHorn(dur,vol){
+  if(!audioCtx)return;dur=dur||2;vol=vol||0.12;
+  var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type='sawtooth';o.frequency.value=110;
+  g.gain.setValueAtTime(0,audioCtx.currentTime);
+  g.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+0.3);
+  g.gain.setValueAtTime(vol,audioCtx.currentTime+dur-0.5);
+  g.gain.linearRampToValueAtTime(0,audioCtx.currentTime+dur);
+  o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+dur);
 }
 
+function sndFire(){
+  if(!audioCtx)return;
+  var buf=audioCtx.createBuffer(1,audioCtx.sampleRate*0.6,audioCtx.sampleRate);
+  var d=buf.getChannelData(0);
+  for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(audioCtx.sampleRate*0.2))*0.4;
+  var s=audioCtx.createBufferSource();s.buffer=buf;
+  var f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.value=2000;f.Q.value=0.5;
+  var g=audioCtx.createGain();g.gain.value=0.25;
+  s.connect(f);f.connect(g);g.connect(masterGain);s.start();
+}
+
+function sndWind(vol){
+  if(!audioCtx)return;vol=vol||0.08;
+  var buf=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
+  var d=buf.getChannelData(0);
+  for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
+  var s=audioCtx.createBufferSource();s.buffer=buf;
+  var f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.value=500;f.Q.value=0.3;
+  var g=audioCtx.createGain();g.gain.value=vol;
+  s.connect(f);f.connect(g);g.connect(masterGain);s.start();s.stop(audioCtx.currentTime+2);
+}
+
+function startBGM(){
+  if(!audioCtx)return;if(bgInterval)clearInterval(bgInterval);
+  var beat=0;
+  bgInterval=setInterval(function(){
+    if(!audioCtx||!audioOn)return;
+    sndDrum(55+(beat%2)*8,0.5,0.1);
+    if(beat%4===0)sndDrum(45,0.7,0.12);
+    if(beat%16===0)sndHorn(3,0.05);
+    beat++;
+  },700);
+}
+
+function stopBGM(){if(bgInterval){clearInterval(bgInterval);bgInterval=null;}}
+
+/* ========================================================
+   戰鬥邏輯
+   ======================================================== */
+function updateSoldiers(p) {
+  var T = performance.now()*0.001;
+
+  soldiers.forEach(function(s, idx){
+    if(!s.alive) return;
+
+    if(p < 0.5) {
+      // 進軍階段 — 慢慢向江心推進
+      if(s.army === 'cao') {
+        s.tx = s.x + Math.sin(T*0.3+idx*0.1)*1;
+        s.tz = s.z - 0.15; // 向南推進
+      } else if(s.army === 'sun') {
+        s.tz = s.z + 0.1; // 向北推進
+      } else {
+        s.tz = s.z + 0.05;
+      }
+    } else if(p < 0.55) {
+      // 火攻前 — 加速
+      if(s.army === 'cao') s.tz = s.z - 0.5;
+      else s.tz = s.z + 0.3;
+    } else if(p < 0.75) {
+      // 戰鬥階段 — 混戰！
+      if(s.army === 'cao') {
+        s.tx = s.x + (Math.random()-0.5)*3;
+        s.tz = s.z - 0.3 - Math.random()*0.5; // 混亂撤退
+        // 火攻後曹軍士兵死亡
+        if(p > 0.6 && Math.random() < 0.005) {
+          s.alive = false;
+          scene.remove(s.body);
+          scene.remove(s.weapon);
+        }
+      } else if(s.army === 'sun') {
+        s.tz = s.z + 0.5; // 追擊
+        s.tx = s.x + (Math.random()-0.5)*2;
+      } else {
+        s.tz = s.z + 0.4;
+        s.tx = s.x + (Math.random()-0.5)*2;
+      }
+      // 攻擊動畫
+      s.attackTimer += 0.1;
+      if(s.attackTimer > 2) {
+        s.attackTimer = 0;
+      }
+    } else {
+      // 撤退/追擊
+      if(s.army === 'cao') {
+        s.tx = s.x - 1; s.tz = s.z - 1;
+        if(Math.random() < 0.01) { s.alive=false; scene.remove(s.body); scene.remove(s.weapon); }
+      } else {
+        s.tz = s.z + 0.3;
+      }
+    }
+
+    s.x += (s.tx - s.x) * 0.08;
+    s.z += (s.tz - s.z) * 0.08;
+    s.body.position.set(s.x, s.y+1.1, s.z);
+    s.weapon.position.set(s.x+0.4, s.y+1.5, s.z);
+
+    // 攻擊動畫 — 劍揮舞
+    if(s.attackTimer > 0 && s.attackTimer < 2 && p >= 0.55 && p <= 0.75) {
+      s.weapon.rotation.z = 0.3 + Math.sin(s.attackTimer * 8) * 1.2;
+      s.weapon.rotation.x = Math.sin(s.attackTimer * 6) * 0.3;
+    }
+
+    // 朝向
+    s.body.lookAt(s.tx, s.body.position.y, s.tz);
+  });
+}
+
+/* ========================================================
+   船隻移動
+   ======================================================== */
 function moveShips(p) {
   var T = performance.now()*0.001;
 
-  for(var i=0;i<cao.length;i++){
-    var u = cao[i];
-    if(p < 0.2) {
-      var a = p/0.2;
-      u.tx = u.ox + Math.sin(T+i)*3;
-      u.tz = u.oz - a*60;
-    } else if(p < 0.3) {
-      u.tx = u.ox + Math.sin(T*0.5+i)*2;
-      u.tz = u.oz - 60;
+  caoShips.forEach(function(u, i){
+    if(p < 0.15) {
+      u.tx = u.ox + Math.sin(T*0.3+i)*2;
+      u.tz = u.oz - p/0.15 * 40;
+    } else if(p < 0.25) {
+      u.tx = u.ox + Math.sin(T*0.2+i)*1.5;
+      u.tz = u.oz - 40;
+    } else if(p < 0.5) {
+      var cr = Math.floor(i/10), cc = i%10;
+      u.tx = -100 + (cc-4.5)*8;
+      u.tz = u.oz - 40 + (cr-2)*12;
     } else if(p < 0.55) {
-      var chainRow = Math.floor(i/8), chainCol = i%8;
-      u.tx = -100 + (chainCol-3.5)*8;
-      u.tz = u.oz - 60 + (chainRow-2.5)*15;
-    } else if(p < 0.7) {
-      var s = (p-0.6)/0.1;
-      u.tx = u.ox + (Math.sin(i*7)*s*80);
-      u.tz = u.oz - 60 - s*120;
-    } else if(p < 0.9) {
-      var r = (p-0.7)/0.2;
-      u.tx = u.ox - r*250;
-      u.tz = u.oz - 60 + r*200;
+      // 火攻前最後整隊
+      u.tx = u.tx || u.ox;
+      u.tz = u.tz || u.oz - 40;
+    } else if(p < 0.65) {
+      // 火攻混亂！
+      var chaos = (p-0.55)/0.1;
+      u.tx = u.ox + Math.sin(i*9)*60*chaos;
+      u.tz = u.oz - 40 - chaos*80;
+      if(!u.burning && p > 0.58) {
+        u.burning = true;
+        // 船體變暗紅
+        if(u.mesh.children[0]) u.mesh.children[0].material.color.setHex(0x5a2010);
+      }
+    } else if(p < 0.8) {
+      var retreat = (p-0.65)/0.15;
+      u.tx = u.ox - retreat*200;
+      u.tz = u.oz - 40 + retreat*180;
     } else {
-      u.tx = u.ox - 300;
-      u.tz = u.oz + 250;
+      u.tx = u.ox - 250;
+      u.tz = u.oz + 200;
     }
-    u.x += (u.tx-u.x)*0.04;
-    u.z += (u.tz-u.z)*0.04;
-    u.mesh.position.x = u.x;
-    u.mesh.position.z = u.z;
-    u.mesh.position.y = Math.sin(T*2+i*0.5)*0.6;
-    u.mesh.rotation.z = (u.tx-u.x)*0.005;
-  }
+    u.x += (u.tx-u.x)*0.03;
+    u.z += (u.tz-u.z)*0.03;
+    u.mesh.position.set(u.x, Math.sin(T*2+i*0.5)*0.6, u.z);
+    u.mesh.rotation.z = (u.tx-u.x)*0.004;
+    u.mesh.rotation.x = (u.tz-u.z)*0.002;
+  });
 
-  for(var i=0;i<sun.length;i++){
-    var u = sun[i];
-    if(p < 0.5) { u.tx = u.ox; u.tz = u.oz; }
-    else if(p < 0.66) {
-      var a = (p-0.5)/0.16;
-      u.tx = u.ox + Math.sin(T+i)*5;
-      u.tz = u.oz - a*100;
+  sunShips.forEach(function(u, i){
+    if(p < 0.45) { u.tx=u.ox; u.tz=u.oz; }
+    else if(p < 0.55) {
+      u.tx = u.ox + Math.sin(T+i)*3;
+      u.tz = u.oz - (p-0.45)/0.1*60; // 火船出發
+    } else if(p < 0.6) {
+      // 衝向曹軍！
+      u.tx = u.ox + Math.sin(T*2+i)*8;
+      u.tz = u.oz - 60 - (p-0.55)/0.05*80;
+    } else if(p < 0.75) {
+      u.tx = u.ox + Math.sin(T+i)*10;
+      u.tz = u.oz - 140 - (p-0.6)/0.15*60;
     } else {
-      var r = (p-0.66)/0.34;
-      u.tx = u.ox + Math.sin(T+i)*8;
-      u.tz = u.oz - 100 - r*80;
+      u.tx = u.ox + Math.sin(T*0.5+i)*5;
+      u.tz = u.oz - 160;
     }
-    u.x += (u.tx-u.x)*0.04;
-    u.z += (u.tz-u.z)*0.04;
+    u.x += (u.tx-u.x)*0.03;
+    u.z += (u.tz-u.z)*0.03;
     u.mesh.position.set(u.x, Math.sin(T*2+i+100)*0.6, u.z);
-  }
+  });
 
-  for(var i=0;i<liu.length;i++){
-    var u = liu[i];
+  liuShips.forEach(function(u, i){
     if(p < 0.1) {
-      var r = p/0.1;
-      u.tx = u.ox - r*40;
-      u.tz = u.oz + r*30;
-    } else if(p < 0.55) { u.tx = u.ox; u.tz = u.oz; }
+      u.tx = u.ox - p/0.1*30;
+      u.tz = u.oz + p/0.1*20;
+    } else if(p < 0.55) { u.tx=u.ox; u.tz=u.oz; }
     else {
-      var a = (p-0.55)/0.45;
-      u.tx = u.ox + Math.sin(T+i+200)*5;
-      u.tz = u.oz - a*120;
+      u.tx = u.ox + Math.sin(T+i)*5;
+      u.tz = u.oz - (p-0.55)/0.45*100;
     }
-    u.x += (u.tx-u.x)*0.04;
-    u.z += (u.tz-u.z)*0.04;
+    u.x += (u.tx-u.x)*0.03;
+    u.z += (u.tz-u.z)*0.03;
     u.mesh.position.set(u.x, Math.sin(T*2+i+200)*0.5, u.z);
-  }
+  });
 
-  for(var i=0;i<generals.length;i++){
-    var g = generals[i];
+  // 將領
+  generals.forEach(function(g, i){
     g.g.position.x = g.ox + Math.sin(T*0.3+i*2)*4;
     g.g.position.z = g.oz + Math.cos(T*0.2+i*3)*3;
-    g.g.children[0].scale.setScalar(1+Math.sin(T*3)*0.2);
-  }
+    g.g.children[0].scale.setScalar(1+Math.sin(T*3)*0.25);
+  });
 }
 
-function updateParticles() {
-  for(var i=firePool.length-1;i>=0;i--){
-    var p = firePool[i];
-    p.m.position.x+=p.vx; p.m.position.y+=p.vy; p.m.position.z+=p.vz;
-    p.life-=p.decay;
-    p.m.material.opacity=p.life;
-    p.m.scale.setScalar(p.life);
-    if(p.life<=0){scene.remove(p.m);firePool.splice(i,1);}
-  }
-  for(var i=smokePool.length-1;i>=0;i--){
-    var p = smokePool[i];
-    p.m.position.y+=p.vy;
-    p.life-=p.decay;
-    p.m.material.opacity=p.life*0.4;
-    p.m.scale.setScalar(1+(1-p.life)*3);
-    if(p.life<=0){scene.remove(p.m);smokePool.splice(i,1);}
-  }
-}
-
+/* ========================================================
+   水面
+   ======================================================== */
 function animateWater(t) {
   var p = water.geometry.attributes.position;
-  var windMult = windDone ? 2.5 : 0.8;
+  var wm = windDone ? 2.5 : 0.7;
   for(var i=0;i<p.count;i++){
-    var x=p.getX(i), y=p.getY(i);
-    p.setZ(i, Math.sin(x*0.015+t*0.4)*1.2*windMult + Math.sin(y*0.02+t*0.3)*0.8*windMult);
+    var x=p.getX(i),y=p.getY(i);
+    p.setZ(i, Math.sin(x*0.015+t*0.4)*1.2*wm + Math.sin(y*0.02+t*0.3)*0.8*wm);
   }
   p.needsUpdate = true;
 }
 
-function updateLighting(p) {
-  if(p >= 0.66 && p <= 0.78) {
+function updateParticles(){
+  for(var i=fireParticles.length-1;i>=0;i--){
+    var p=fireParticles[i];
+    p.m.position.x+=p.vx;p.m.position.y+=p.vy;p.m.position.z+=p.vz;
+    p.life-=p.decay; p.m.material.opacity=p.life; p.m.scale.setScalar(p.life);
+    if(p.life<=0){scene.remove(p.m);fireParticles.splice(i,1);}
+  }
+  for(var i=smokeParticles.length-1;i>=0;i--){
+    var p=smokeParticles[i];
+    p.m.position.y+=p.vy; p.life-=p.decay;
+    p.m.material.opacity=p.life*0.4; p.m.scale.setScalar(1+(1-p.life)*3);
+    if(p.life<=0){scene.remove(p.m);smokeParticles.splice(i,1);}
+  }
+  for(var i=arrows.length-1;i>=0;i--){
+    var a=arrows[i];
+    a.mesh.position.x+=a.vx; a.mesh.position.y+=a.vy; a.mesh.position.z+=a.vz;
+    a.vy-=0.06; a.life-=0.012;
+    a.mesh.rotation.x += 0.3;
+    if(a.life<=0||a.mesh.position.y<0){scene.remove(a.mesh);arrows.splice(i,1);}
+  }
+}
+
+/* ========================================================
+   光照隨戰況
+   ======================================================== */
+function updateLighting(p){
+  if(p>=0.55&&p<=0.7){
     ambLight.color.setHex(0x553311);
-    ambLight.intensity = 0.35 + Math.sin(performance.now()*0.008)*0.15;
-    renderer.toneMappingExposure = 0.55;
+    ambLight.intensity = 0.35+Math.sin(performance.now()*0.008)*0.2;
+    renderer.toneMappingExposure = 0.5;
     scene.fog.color.setHex(0x2a1000);
+  } else if(p>=0.75&&p<=0.85){
+    ambLight.color.setHex(0x223344);
+    ambLight.intensity = 0.35;
+    renderer.toneMappingExposure = 0.5;
+    scene.fog.color.setHex(0x0a0a2a);
   } else {
     ambLight.color.setHex(0x334455);
     ambLight.intensity = 0.5;
@@ -587,312 +856,299 @@ function updateLighting(p) {
   }
 }
 
-function drawMinimap() {
-  var cv = document.getElementById('mm-cv');
-  var ctx = cv.getContext('2d');
-  cv.width = 140; cv.height = 80;
-  ctx.fillStyle='#0a1a2a'; ctx.fillRect(0,0,140,80);
-  ctx.fillStyle='#1a3a5a'; ctx.fillRect(0,25,140,30);
-  var mx=function(x){return (x/1000+0.5)*140;};
-  var mz=function(z){return (-z/800+0.5)*80;};
-  var colors = {cao:'#4488ff',sun:'#ff4444',liu:'#44cc44'};
-  var all = cao.concat(sun, liu);
-  for(var i=0;i<all.length;i++){
-    var u = all[i];
-    ctx.fillStyle = colors[u.army];
-    ctx.fillRect(mx(u.x)-1,mz(u.z)-1,2,2);
+/* ========================================================
+   電影運鏡
+   ======================================================== */
+function selectCamera(p){
+  var idx;
+  if(p<0.04)idx=0;else if(p<0.10)idx=1;else if(p<0.15)idx=2;
+  else if(p<0.20)idx=3;else if(p<0.25)idx=4;else if(p<0.30)idx=5;
+  else if(p<0.35)idx=6;else if(p<0.45)idx=7;else if(p<0.50)idx=8;
+  else if(p<0.55)idx=9;else if(p<0.60)idx=10;else if(p<0.65)idx=11;
+  else if(p<0.70)idx=12;else if(p<0.75)idx=13;else if(p<0.85)idx=14;
+  else idx=15;
+
+  if(idx!==camIdx){
+    camIdx=idx;
+    var v=camViews[idx];
+    camFrom={x:camera.position.x,y:camera.position.y,z:camera.position.z};
+    camTo={x:v.pos[0],y:v.pos[1],z:v.pos[2]};
+    camTarFrom=controls.target.clone();
+    camTarTo=new THREE.Vector3(v.tar[0],v.tar[1],v.tar[2]);
+    camTransitioning=true; camT=0; camHoldTimer=0;
+
+    // 顯示鏡頭名稱
+    var cn=document.getElementById('cam-name');
+    cn.textContent=v.name; cn.style.opacity='1';
+    setTimeout(function(){cn.style.opacity='0';},2500);
+
+    document.getElementById('phase-label').textContent=v.name+' — '+events.filter(function(e){return p>=e.t;}).pop().lb;
+    setTimeout(function(){
+      var curEv=events[0];
+      for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){curEv=events[i];break;}}
+      document.getElementById('phase-label').textContent=curEv.lb;
+    },2500);
   }
-  ctx.strokeStyle='#ffa500'; ctx.lineWidth=1;
+}
+
+function updateCamera(){
+  if(userCam)return;
+  if(!camTransitioning){
+    camHoldTimer++;
+    var v=camViews[camIdx];
+    var T=performance.now()*0.0003;
+    // 呼吸感微動
+    camera.position.x=v.pos[0]+Math.sin(T)*3;
+    camera.position.y=v.pos[1]+Math.cos(T*0.7)*2;
+    camera.position.z=v.pos[2]+Math.sin(T*1.3)*3;
+    // 戰鬥階段增加震動
+    if(progress>=0.55&&progress<=0.7){
+      camera.position.x+=(Math.random()-0.5)*1.5;
+      camera.position.y+=(Math.random()-0.5)*1;
+    }
+    return;
+  }
+  camT+=0.006;
+  if(camT>=1){camT=1;camTransitioning=false;camHoldTimer=0;}
+  var s=camT*camT*(3-2*camT);
+  camera.position.x=camFrom.x+(camTo.x-camFrom.x)*s;
+  camera.position.y=camFrom.y+(camTo.y-camFrom.y)*s;
+  camera.position.z=camFrom.z+(camTo.z-camFrom.z)*s;
+  controls.target.x=camTarFrom.x+(camTarTo.x-camTarFrom.x)*s;
+  controls.target.y=camTarFrom.y+(camTarTo.y-camTarFrom.y)*s;
+  controls.target.z=camTarFrom.z+(camTarTo.z-camTarFrom.z)*s;
+}
+
+/* ========================================================
+   UI
+   ======================================================== */
+function updatePhase(p){
+  var months=['冬十月','冬十一月','冬十二月','建安十四年春'];
+  document.getElementById('t-time').textContent='建安十三年'+months[Math.min(3,Math.floor(p*4))];
+
+  var curEv=events[0];
+  for(var i=events.length-1;i>=0;i--){if(p>=events[i].t){curEv=events[i];break;}}
+  if(!camTransitioning) document.getElementById('phase-label').textContent=curEv.lb;
+
+  var el=document.getElementById('ev-list');
+  el.innerHTML='';
+  for(var i=0;i<events.length;i++){
+    var e=events[i];
+    var d=document.createElement('div');
+    d.className='ev'+(p>=e.t?' on':'');
+    d.innerHTML='<span class="et">'+Math.floor(e.t*100)+'%</span>'+e.lb;
+    el.appendChild(d);
+  }
+  var active=el.querySelectorAll('.on');
+  if(active.length)active[active.length-1].scrollIntoView({block:'nearest'});
+
+  var weathers=['☀ 東南風微弱','☁ 陰天','🌧 小雨','🌫 濃霧','風 東南風大起','火 烈火燎原','火 煙塵滾滾','🌧 大雨','⛅ 風停','☀ 天晴'];
+  document.getElementById('weather').textContent=weathers[Math.min(weathers.length-1,Math.floor(p*10))];
+
+  var cp=Math.max(5,100-p*140);
+  var sp=Math.min(80,55+p*40);
+  var lp=Math.min(60,22+p*55);
+  document.getElementById('cao-bar').style.width=cp+'%';
+  document.getElementById('sun-bar').style.width=sp+'%';
+  document.getElementById('liu-bar').style.width=lp+'%';
+  document.getElementById('cao-num').textContent=Math.floor(830000*cp/100).toLocaleString();
+  document.getElementById('sun-num').textContent=Math.floor(50000*sp/55).toLocaleString();
+  document.getElementById('liu-num').textContent=Math.floor(20000*lp/22).toLocaleString();
+
+  // 計策彈窗
+  if(curEv.strat && p>=curEv.t && p<curEv.t+0.05){
+    var stratEl=document.getElementById('strategy-popup');
+    stratEl.textContent=curEv.strat;
+    stratEl.style.opacity='1';
+    strategyTimer=180;
+  }
+}
+
+function drawMinimap(){
+  var cv=document.getElementById('mm-cv');
+  var ctx=cv.getContext('2d');
+  cv.width=130;cv.height=72;
+  ctx.fillStyle='#0a1a2a';ctx.fillRect(0,0,130,72);
+  ctx.fillStyle='#1a3a5a';ctx.fillRect(0,20,130,28);
+  var mx=function(x){return(x/1200+0.5)*130;};
+  var mz=function(z){return(-z/900+0.5)*72;};
+  var colors={cao:'#4488ff',sun:'#ff4444',liu:'#44cc44'};
+  allShips.forEach(function(u){ctx.fillStyle=colors[u.army];ctx.fillRect(mx(u.x)-1,mz(u.z)-1,2,2);});
+  ctx.strokeStyle='#ffa500';ctx.lineWidth=1;
   ctx.strokeRect(mx(camera.position.x)-3,mz(camera.position.z)-3,6,6);
 }
 
-/* ====== 音效 ====== */
-var audioCtx, masterGain;
-var bgMusicInterval = null;
-var lastSoundPhase = -1;
+/* ========================================================
+   控制
+   ======================================================== */
+var btnPlay=document.getElementById('btn-play');
+var fill=document.getElementById('t-fill');
+var thumb=document.getElementById('t-thumb');
+var track=document.getElementById('t-track');
+var dragging=false;
 
-function initAudio() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0.3;
-  masterGain.connect(audioCtx.destination);
-}
-
-function playDrum(freq, dur, vol) {
-  if(!audioCtx) return;
-  freq=freq||80; dur=dur||0.3; vol=vol||0.3;
-  var o = audioCtx.createOscillator();
-  var g = audioCtx.createGain();
-  o.type='sine';
-  o.frequency.setValueAtTime(freq, audioCtx.currentTime);
-  o.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime+dur);
-  g.gain.setValueAtTime(vol, audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+dur);
-  o.connect(g); g.connect(masterGain);
-  o.start(); o.stop(audioCtx.currentTime+dur);
-}
-
-function playHorn(dur, vol) {
-  if(!audioCtx) return;
-  dur=dur||2; vol=vol||0.15;
-  var o = audioCtx.createOscillator();
-  var g = audioCtx.createGain();
-  o.type='sawtooth'; o.frequency.value=110;
-  g.gain.setValueAtTime(0, audioCtx.currentTime);
-  g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime+0.3);
-  g.gain.setValueAtTime(vol, audioCtx.currentTime+dur-0.5);
-  g.gain.linearRampToValueAtTime(0, audioCtx.currentTime+dur);
-  o.connect(g); g.connect(masterGain);
-  o.start(); o.stop(audioCtx.currentTime+dur);
-}
-
-function playFireCrackle() {
-  if(!audioCtx) return;
-  var buf = audioCtx.createBuffer(1, audioCtx.sampleRate*0.5, audioCtx.sampleRate);
-  var d = buf.getChannelData(0);
-  for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(audioCtx.sampleRate*0.15))*0.3;
-  var s = audioCtx.createBufferSource();
-  s.buffer=buf;
-  var f = audioCtx.createBiquadFilter();
-  f.type='bandpass'; f.frequency.value=2000; f.Q.value=0.5;
-  var g = audioCtx.createGain(); g.gain.value=0.2;
-  s.connect(f); f.connect(g); g.connect(masterGain);
-  s.start();
-}
-
-function playWind(vol) {
-  if(!audioCtx) return;
-  vol=vol||0.08;
-  var buf = audioCtx.createBuffer(1, audioCtx.sampleRate*2, audioCtx.sampleRate);
-  var d = buf.getChannelData(0);
-  for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
-  var s = audioCtx.createBufferSource();
-  s.buffer=buf;
-  var f = audioCtx.createBiquadFilter();
-  f.type='bandpass'; f.frequency.value=400; f.Q.value=0.3;
-  var g = audioCtx.createGain(); g.gain.value=vol;
-  s.connect(f); f.connect(g); g.connect(masterGain);
-  s.start(); s.stop(audioCtx.currentTime+2);
-}
-
-function startBGMusic() {
-  if(!audioCtx) return;
-  if(bgMusicInterval) clearInterval(bgMusicInterval);
-  var beat = 0;
-  bgMusicInterval = setInterval(function(){
-    if(!audioCtx || !audioOn) return;
-    playDrum(60+(beat%2)*10, 0.4, 0.12);
-    if(beat%4===0) playDrum(50, 0.6, 0.15);
-    if(beat%16===0) playHorn(3, 0.06);
-    beat++;
-  }, 800);
-}
-
-function stopBGMusic() {
-  if(bgMusicInterval){clearInterval(bgMusicInterval); bgMusicInterval=null;}
-}
-
-function phaseSounds(p) {
-  var phase = Math.floor(p*10);
-  if(phase === lastSoundPhase) return;
-  lastSoundPhase = phase;
-  if(phase <= 2) playDrum(70, 0.5, 0.2);
-  else if(phase <= 5) playWind(0.1);
-  else if(phase <= 7) { playFireCrackle(); playDrum(40, 0.8, 0.25); playHorn(2.5, 0.1); }
-  else if(phase <= 9) playDrum(50, 0.6, 0.15);
-}
-
-/* ====== 控制 ====== */
-var btnPlay = document.getElementById('btn-play');
-var btnSl = document.getElementById('btn-sl');
-var btnSf = document.getElementById('btn-sf');
-var fill = document.getElementById('t-fill');
-var thumb = document.getElementById('t-thumb');
-
-function syncUI(){
-  fill.style.width=progress*100+'%';
-  thumb.style.left=progress*100+'%';
-  updatePhase(progress);
-}
+function syncUI(){fill.style.width=progress*100+'%';thumb.style.left=progress*100+'%';updatePhase(progress);}
 
 function togglePlay(){
-  playing = !playing;
-  btnPlay.textContent = playing ? '⏸ 暫停' : '▶ 播放';
-  btnPlay.className = playing ? 'on' : '';
-  if(playing) { camTransitioning = false; userCam = false; }
+  playing=!playing;
+  btnPlay.textContent=playing?'⏸ 暫停':'▶ 播放';
+  btnPlay.className=playing?'on':'';
+  if(playing){camTransitioning=false;userCam=false;}
 }
 
-function speedBy(d){
-  speed = Math.max(0.25, Math.min(4, speed + d*0.25));
-}
+function speedBy(d){speed=Math.max(0.25,Math.min(4,speed+d*0.25));}
 
 function toggleAudio(){
-  if(!audioCtx) { initAudio(); audioCtx.resume(); }
-  audioOn = !audioOn;
-  document.getElementById('audio-btn').textContent = audioOn ? '🔊 音效' : '🔇 音效';
-  masterGain.gain.linearRampToValueAtTime(audioOn?0.3:0, audioCtx.currentTime+0.2);
-  if(audioOn) startBGMusic(); else stopBGMusic();
+  if(!audioCtx){initAudio();audioCtx.resume();}
+  audioOn=!audioOn;
+  document.getElementById('audio-btn').textContent=audioOn?'🔊 音效':'🔇 音效';
+  masterGain.gain.linearRampToValueAtTime(audioOn?0.3:0,audioCtx.currentTime+0.2);
+  if(audioOn)startBGM();else stopBGM();
 }
 
 function startBattle(){
-  if(started) return;
-  started = true;
-  playing = true;
-  btnPlay.textContent = '⏸ 暫停';
-  btnPlay.className = 'on';
-  document.getElementById('intro').style.opacity = '0';
-  setTimeout(function(){document.getElementById('intro').style.display='none';}, 2000);
-  if(!audioCtx) initAudio();
-  audioOn = true;
-  document.getElementById('audio-btn').textContent = '🔊 音效';
+  if(started)return;
+  started=true;
+  playing=true;
+  btnPlay.textContent='⏸ 暫停'; btnPlay.className='on';
+  document.getElementById('intro').style.opacity='0';
+  setTimeout(function(){document.getElementById('intro').style.display='none';},2000);
+  if(!audioCtx)initAudio();
+  audioOn=true;
+  document.getElementById('audio-btn').textContent='🔊 音效';
   audioCtx.resume();
-  startBGMusic();
-  playHorn(3, 0.2);
+  startBGM();
+  sndHorn(3,0.2);
 }
 
-// Event listeners
-document.getElementById('intro').addEventListener('click', startBattle);
-document.getElementById('intro').addEventListener('touchend', function(e){e.preventDefault();startBattle();});
-btnPlay.addEventListener('click', togglePlay);
-btnSl.addEventListener('click', function(){speedBy(-1);});
-btnSf.addEventListener('click', function(){speedBy(1);});
-document.getElementById('audio-btn').addEventListener('click', toggleAudio);
+// 事件綁定
+document.getElementById('intro').addEventListener('click',startBattle);
+document.getElementById('intro').addEventListener('touchend',function(e){e.preventDefault();startBattle();});
+btnPlay.addEventListener('click',togglePlay);
+document.getElementById('btn-sl').addEventListener('click',function(){speedBy(-1);});
+document.getElementById('btn-sf').addEventListener('click',function(){speedBy(1);});
+document.getElementById('audio-btn').addEventListener('click',toggleAudio);
 
-// Timeline drag
-var track = document.getElementById('t-track');
-var dragging = false;
-track.addEventListener('mousedown', function(e){dragging=true;slide(e);});
-track.addEventListener('touchstart', function(e){dragging=true;slideTouch(e);});
-document.addEventListener('mousemove', function(e){if(dragging)slide(e);});
-document.addEventListener('touchmove', function(e){if(dragging)slideTouch(e);});
-document.addEventListener('mouseup', function(){dragging=false;});
-document.addEventListener('touchend', function(){dragging=false;});
+track.addEventListener('mousedown',function(e){dragging=true;slide(e);});
+document.addEventListener('mousemove',function(e){if(dragging)slide(e);});
+document.addEventListener('mouseup',function(){dragging=false;});
+track.addEventListener('touchstart',function(e){dragging=true;slideT(e);});
+document.addEventListener('touchmove',function(e){if(dragging)slideT(e);});
+document.addEventListener('touchend',function(){dragging=false;});
+function slide(e){var r=track.getBoundingClientRect();progress=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));fireDone=false;windDone=false;battleStarted=false;syncUI();}
+function slideT(e){var r=track.getBoundingClientRect();var t=e.touches[0]||e.changedTouches[0];progress=Math.max(0,Math.min(1,(t.clientX-r.left)/r.width));fireDone=false;windDone=false;battleStarted=false;syncUI();}
 
-function slide(e){
-  var r=track.getBoundingClientRect();
-  progress = Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  fireDone=false; windDone=false;
-  syncUI();
-}
-function slideTouch(e){
-  var r=track.getBoundingClientRect();
-  var t = e.touches[0] || e.changedTouches[0];
-  progress = Math.max(0,Math.min(1,(t.clientX-r.left)/r.width));
-  fireDone=false; windDone=false;
-  syncUI();
-}
-
-// Keyboard
-document.addEventListener('keydown', function(e){
+document.addEventListener('keydown',function(e){
   if(e.code==='Space'){e.preventDefault();togglePlay();}
   if(e.code==='ArrowRight'){progress=Math.min(1,progress+0.02);fireDone=false;windDone=false;syncUI();}
   if(e.code==='ArrowLeft'){progress=Math.max(0,progress-0.02);fireDone=false;windDone=false;syncUI();}
 });
 
-// Camera control
-controls.addEventListener('start', function(){userCam=true;});
+controls.addEventListener('start',function(){userCam=true;});
 var camTimeout;
-controls.addEventListener('end', function(){
-  clearTimeout(camTimeout);
-  camTimeout = setTimeout(function(){if(playing){userCam=false;}}, 4000);
-});
+controls.addEventListener('end',function(){clearTimeout(camTimeout);camTimeout=setTimeout(function(){if(playing){userCam=false;}},4000);});
 
-// Click generals
-var ray = new THREE.Raycaster();
-var ms = new THREE.Vector2();
-renderer.domElement.addEventListener('click', function(e){
-  ms.x=(e.clientX/innerWidth)*2-1;
-  ms.y=-(e.clientY/innerHeight)*2+1;
-  ray.setFromCamera(ms, camera);
+// 點擊將領
+var ray=new THREE.Raycaster();
+var mouse=new THREE.Vector2();
+renderer.domElement.addEventListener('click',function(e){
+  mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  ray.setFromCamera(mouse,camera);
   for(var i=0;i<generals.length;i++){
-    var g = generals[i];
+    var g=generals[i];
     if(ray.intersectObject(g.g.children[0]).length>0){
-      userCam = true;
-      controls.target.set(g.g.position.x, g.g.position.y, g.g.position.z);
-      camera.position.set(g.g.position.x+30, g.g.position.y+40, g.g.position.z+30);
-      document.getElementById('phase-label').textContent = g.name + ' - ' + g.title;
-      setTimeout(function(name,title){return function(){
-        var curEv=events[0];
-        for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){curEv=events[i];break;}}
-        document.getElementById('phase-label').textContent = curEv.lb;
-      };}(g.name,g.title), 4000);
+      userCam=true;
+      controls.target.set(g.g.position.x,g.g.position.y,g.g.position.z);
+      camera.position.set(g.g.position.x+30,g.g.position.y+40,g.g.position.z+30);
+      document.getElementById('phase-label').textContent=g.name+' — '+g.title;
+      (function(nm,tl){setTimeout(function(){
+        var ce=events[0];for(var i=events.length-1;i>=0;i--){if(progress>=events[i].t){ce=events[i];break;}}
+        document.getElementById('phase-label').textContent=ce.lb;
+      },4000);})(g.name,g.title);
       break;
     }
   }
 });
 
-// Resize
-window.addEventListener('resize', function(){
+window.addEventListener('resize',function(){
   camera.aspect=innerWidth/innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth,innerHeight);
 });
 
-/* ====== 主循環 ====== */
-var clock = new THREE.Clock();
-var frameCount = 0;
+/* ========================================================
+   主循環
+   ======================================================== */
+var clock=new THREE.Clock();
 
-function animate() {
+function animate(){
   requestAnimationFrame(animate);
-  var T = clock.getElapsedTime();
+  var T=clock.getElapsedTime();
   frameCount++;
 
-  if(playing && progress < 1) {
-    progress += 0.0002 * speed;
-    if(progress >= 1) {
-      progress = 1;
-      playing = false;
-      btnPlay.textContent='↻ 重播';
-      btnPlay.className='';
-    }
-    fill.style.width = progress*100+'%';
-    thumb.style.left = progress*100+'%';
+  // 推進
+  if(playing&&progress<1){
+    progress+=0.0002*speed;
+    if(progress>=1){progress=1;playing=false;btnPlay.textContent='↻ 重播';btnPlay.className='';}
+    fill.style.width=progress*100+'%';
+    thumb.style.left=progress*100+'%';
   }
 
   updatePhase(progress);
   moveShips(progress);
+  updateSoldiers(progress);
   updateLighting(progress);
   animateWater(T);
   updateParticles();
 
-  // Fire trigger
-  if(progress >= 0.66 && !fireDone) {
-    fireDone = true;
-    for(var i=0;i<cao.length;i++){
-      (function(idx){setTimeout(function(){
-        var u=cao[idx];
-        spawnFire(u.x, 2, u.z);
-      }, idx*80);})(i);
-    }
+  // 火攻觸發
+  if(progress>=0.55&&!fireDone){
+    fireDone=true;
+    // 火船爆炸
+    caoShips.forEach(function(u,i){
+      setTimeout(function(){spawnExplosion(u.x,2,u.z);},i*60);
+    });
+    // 持續火攻
     (function(){
-      var fireLoop = setInterval(function(){
-        if(progress>=0.66 && progress<=0.78 && audioOn) {
-          spawnFire(-100+(Math.random()-0.5)*100, 2, -300+(Math.random()-0.5)*60);
-          playFireCrackle();
-        } else {
-          clearInterval(fireLoop);
-        }
-      }, 500);
+      var fl=setInterval(function(){
+        if(progress>=0.55&&progress<=0.7&&audioOn){
+          spawnFire(-100+(Math.random()-0.5)*120, 2, -300+(Math.random()-0.5)*60);
+          if(frameCount%10===0)sndFire();
+        }else clearInterval(fl);
+      },400);
     })();
   }
 
-  if(progress >= 0.54 && !windDone) { windDone = true; playWind(0.15); }
-  if(progress >= 0.82 && progress <= 0.88 && frameCount % 120 === 0) flashLightning();
-
-  if(strategyTimer > 0) {
-    strategyTimer--;
-    if(strategyTimer <= 0) document.getElementById('strategy-popup').style.opacity = 0;
+  // 箭雨
+  if(progress>=0.4&&progress<0.45&&frameCount%60===0){
+    arrowRain(15, -50, 200, 200);
   }
 
-  if(audioOn) phaseSounds(progress);
+  // 風
+  if(progress>=0.45&&!windDone){windDone=true;sndWind(0.15);}
+
+  // 閃電
+  if(progress>=0.75&&progress<=0.85&&frameCount%100===0)flashLightning();
+
+  // 戰鬥音效
+  var phase=Math.floor(progress*10);
+  if(phase!==lastSoundPhase){
+    lastSoundPhase=phase;
+    if(phase<=3)sndDrum(70,0.5,0.2);
+    else if(phase<=6&&audioOn){sndFire();sndDrum(40,0.8,0.25);}
+    else if(phase<=8)sndDrum(50,0.6,0.15);
+  }
+
+  // 計策彈窗
+  if(strategyTimer>0){strategyTimer--;if(strategyTimer<=0)document.getElementById('strategy-popup').style.opacity='0';}
 
   selectCamera(progress);
   updateCamera();
 
-  if(frameCount % 30 === 0) drawMinimap();
+  if(frameCount%30===0)drawMinimap();
 
   controls.update();
-  renderer.render(scene, camera);
+  renderer.render(scene,camera);
 }
 
 animate();
