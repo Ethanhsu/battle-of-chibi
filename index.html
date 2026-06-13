@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赤壁之戰 3D 互動視覺化</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{overflow:hidden;background:#000;font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;color:#fff;}
+canvas{display:block;}
+#ui{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+#title-bar{position:absolute;top:12px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:auto;z-index:10;}
+#title-bar h1{font-size:28px;text-shadow:0 0 20px rgba(255,150,0,0.8),0 2px 4px #000;letter-spacing:8px;color:#ffe0a0;}
+#title-bar .subtitle{font-size:13px;color:#c8a060;margin-top:2px;}
+#timeline-bar{position:absolute;bottom:0;left:0;width:100%;height:72px;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.4) 70%,transparent 100%);display:flex;align-items:center;padding:0 20px;pointer-events:auto;z-index:10;}
+#timeline-bar .controls{display:flex;align-items:center;gap:8px;margin-right:16px;}
+#timeline-bar button{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;}
+#timeline-bar button:hover{background:rgba(255,255,255,0.25);}
+#timeline-bar button.active{background:rgba(255,180,0,0.35);border-color:#ffa500;}
+#timeline-track{flex:1;height:6px;background:rgba(255,255,255,0.15);border-radius:3px;position:relative;cursor:pointer;margin:0 16px;}
+#timeline-fill{height:100%;background:linear-gradient(90deg,#ff4444,#ffa500,#44aaff);border-radius:3px;width:0%;transition:width 0.1s;}
+#timeline-thumb{position:absolute;top:-7px;width:18px;height:20px;background:#ffe0a0;border-radius:9px;border:2px solid #c89030;left:0%;transform:translateX(-50%);cursor:grab;box-shadow:0 0 8px rgba(255,180,0,0.5);}
+#timeline-labels{position:absolute;top:18px;left:0;width:100%;display:flex;justify-content:space-between;padding:0 0;pointer-events:none;}
+#timeline-labels span{font-size:10px;color:rgba(255,255,255,0.5);white-space:nowrap;}
+#time-display{font-size:14px;color:#ffa500;min-width:100px;text-align:center;margin:0 8px;font-weight:bold;}
+#event-panel{position:absolute;top:70px;right:12px;width:280px;background:rgba(0,0,0,0.75);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:14px;pointer-events:auto;z-index:10;max-height:calc(100vh - 200px);overflow-y:auto;}
+#event-panel h3{font-size:14px;color:#ffa500;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:6px;}
+#event-list{list-style:none;}
+#event-list li{padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;line-height:1.5;}
+#event-list li.active{color:#ffd700;font-weight:bold;}
+#event-list li .time{color:#888;font-size:11px;}
+#army-info{position:absolute;top:70px;left:12px;width:240px;background:rgba(0,0,0,0.75);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:14px;pointer-events:auto;z-index:10;}
+#army-info h3{font-size:14px;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:6px;}
+.army-card{margin-bottom:10px;padding:8px;border-radius:6px;border-left:3px solid;}
+.army-card.cao{border-color:#4488ff;background:rgba(40,80,180,0.15);}
+.army-card.sun{border-color:#ff4444;background:rgba(180,40,40,0.15);}
+.army-card.liu{border-color:#44cc44;background:rgba(40,160,40,0.15);}
+.army-card h4{font-size:13px;margin-bottom:4px;}
+.army-card .stat{font-size:11px;color:#ccc;line-height:1.6;}
+.army-card .bar{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin:3px 0;overflow:hidden;}
+.army-card .bar-fill{height:100%;border-radius:3px;transition:width 0.5s;}
+#legend{position:absolute;bottom:82px;right:12px;background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:11px;pointer-events:auto;z-index:10;}
+#legend div{margin:3px 0;display:flex;align-items:center;gap:6px;}
+#legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+#weather{position:absolute;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);padding:6px 16px;border-radius:20px;font-size:13px;pointer-events:none;z-index:10;text-align:center;}
+#minimap{position:absolute;bottom:82px;left:12px;width:160px;height:100px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:6px;pointer-events:auto;z-index:10;overflow:hidden;}
+#minimap canvas{width:100%;height:100%;}
+#intro-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,rgba(10,5,0,0.9),rgba(0,0,0,0.97));display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;pointer-events:auto;transition:opacity 1s;}
+#intro-overlay h1{font-size:52px;color:#ffd700;text-shadow:0 0 40px rgba(255,150,0,0.6),0 4px 8px #000;letter-spacing:16px;margin-bottom:16px;}
+#intro-overlay .year{font-size:22px;color:#c8a060;margin-bottom:24px;letter-spacing:4px;}
+#intro-overlay .desc{max-width:600px;text-align:center;font-size:14px;line-height:1.8;color:#a08050;margin-bottom:32px;}
+#intro-overlay button{background:linear-gradient(135deg,#c89030,#a06820);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-size:16px;cursor:pointer;font-family:inherit;letter-spacing:4px;box-shadow:0 4px 16px rgba(200,144,48,0.3);}
+#intro-overlay button:hover{background:linear-gradient(135deg,#e0a840,#b87830);}
+#camera-hint{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);font-size:11px;color:rgba(255,255,255,0.4);pointer-events:none;z-index:10;}
+</style>
+</head>
+<body>
+
+<div id="intro-overlay">
+  <h1>赤 壁 之 戰</h1>
+  <div class="year">建安十三年 · 公元 208 年</div>
+  <div class="desc">
+    曹操率八十萬大軍南下，孫權與劉備結盟抵禦。<br>
+    周瑜、黃蓋以火攻之計，於赤壁一戰定天下三分。<br>
+    拖曳旋轉視角 · 滾輪縮放 · 點擊將領查看資訊
+  </div>
+  <button onclick="startExperience()">開 始 體 驗</button>
+</div>
+
+<div id="ui">
+  <div id="title-bar">
+    <h1>赤壁之戰</h1>
+    <div class="subtitle">公元 208 年 · 長江赤壁</div>
+  </div>
+
+  <div id="weather">☀ 東南風微弱</div>
+
+  <div id="army-info">
+    <h3>軍勢總覽</h3>
+    <div class="army-card cao"><h4 style="color:#6699ff">曹 操 (魏)</h4><div class="stat">兵力: <span id="cao-count">830,000</span></div><div class="bar"><div class="bar-fill" id="cao-bar" style="width:100%;background:#4488ff;"></div></div><div class="stat">戰力 <span id="cao-str">100%</span></div></div>
+    <div class="army-card sun"><h4 style="color:#ff6666">孫 權 (吳)</h4><div class="stat">兵力: <span id="sun-count">50,000</span></div><div class="bar"><div class="bar-fill" id="sun-bar" style="width:60%;background:#ff4444;"></div></div><div class="stat">戰力 <span id="sun-str">60%</span></div></div>
+    <div class="army-card liu"><h4 style="color:#66dd66">劉 備 (蜀)</h4><div class="stat">兵力: <span id="liu-count">20,000</span></div><div class="bar"><div class="bar-fill" id="liu-bar" style="width:24%;background:#44cc44;"></div></div><div class="stat">戰力 <span id="liu-str">24%</span></div></div>
+  </div>
+
+  <div id="event-panel">
+    <h3>⚔ 戰爭事件</h3>
+    <ul id="event-list"></ul>
+  </div>
+
+  <div id="legend">
+    <div><span class="dot" style="background:#4488ff"></span> 曹操軍 (魏)</div>
+    <div><span class="dot" style="background:#ff4444"></span> 孫權軍 (吳)</div>
+    <div><span class="dot" style="background:#44cc44"></span> 劉備軍 (蜀)</div>
+    <div><span class="dot" style="background:#ffa500"></span> 計策發動</div>
+    <div><span class="dot" style="background:#ff4400"></span> 火攻</div>
+  </div>
+
+  <div id="minimap"><canvas id="minimap-canvas"></canvas></div>
+
+  <div id="camera-hint">🖱 左鍵拖曳旋轉 · 右鍵平移 · 滾輪縮放 · 滑鼠中鍵鎖定</div>
+
+  <div id="timeline-bar">
+    <div class="controls">
+      <button id="btn-play" onclick="togglePlay()">▶ 播放</button>
+      <button onclick="changeSpeed(-1)">- 慢速</button>
+      <button onclick="changeSpeed(1)">+ 快速</button>
+    </div>
+    <div id="time-display">建安十三年 · 冬</div>
+    <div id="timeline-track" id="track">
+      <div id="timeline-fill"></div>
+      <div id="timeline-thumb"></div>
+    </div>
+    <div id="timeline-labels">
+      <span>曹操南下</span><span>周瑜決戰</span><span>火攻赤壁</span><span>曹操敗走</span>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+// ============ SCENE SETUP ============
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0a0500, 0.0008);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 5000);
+camera.position.set(0, 300, 500);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.8;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.maxPolarAngle = Math.PI * 0.48;
+controls.minDistance = 50;
+controls.maxDistance = 1500;
+controls.target.set(0, 0, 0);
+
+// ============ LIGHTING ============
+const ambientLight = new THREE.AmbientLight(0x332211, 0.6);
+scene.add(ambientLight);
+
+const dirLight = new THREE.DirectionalLight(0xffeedd, 1.2);
+dirLight.position.set(200, 300, 100);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(2048, 2048);
+dirLight.shadow.camera.near = 10;
+dirLight.shadow.camera.far = 1000;
+dirLight.shadow.camera.left = -400;
+dirLight.shadow.camera.right = 400;
+dirLight.shadow.camera.top = 400;
+dirLight.shadow.camera.bottom = -400;
+scene.add(dirLight);
+
+const hemiLight = new THREE.HemisphereLight(0x6688cc, 0x443322, 0.4);
+scene.add(hemiLight);
+
+// ============ TERRAIN ============
+function createTerrain() {
+  // River plane
+  const riverGeo = new THREE.PlaneGeometry(2000, 800, 80, 40);
+  const pos = riverGeo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    pos.setZ(i, Math.sin(x * 0.02) * 2 + Math.sin(y * 0.03) * 1.5);
+  }
+  riverGeo.computeVertexNormals();
+  const riverMat = new THREE.MeshPhongMaterial({
+    color: 0x1a3a5a,
+    shininess: 80,
+    transparent: true,
+    opacity: 0.9,
+    specular: 0x4466aa
+  });
+  const river = new THREE.Mesh(riverGeo, riverMat);
+  river.rotation.x = -Math.PI / 2;
+  river.receiveShadow = true;
+  scene.add(river);
+
+  // North bank (Cao side)
+  const northBankGeo = new THREE.PlaneGeometry(2000, 200, 40, 10);
+  const nbPos = northBankGeo.attributes.position;
+  for (let i = 0; i < nbPos.count; i++) {
+    nbPos.setZ(i, 5 + Math.random() * 3);
+  }
+  northBankGeo.computeVertexNormals();
+  const bankMat = new THREE.MeshPhongMaterial({ color: 0x3a5a2a, flatShading: true });
+  const northBank = new THREE.Mesh(northBankGeo, bankMat);
+  northBank.rotation.x = -Math.PI / 2;
+  northBank.position.set(0, 0.5, -400);
+  northBank.receiveShadow = true;
+  scene.add(northBank);
+
+  // South bank (Sun/Liu side) - Chibi
+  const southBankGeo = new THREE.PlaneGeometry(2000, 250, 40, 10);
+  const sbPos = southBankGeo.attributes.position;
+  for (let i = 0; i < sbPos.count; i++) {
+    sbPos.setZ(i, 5 + Math.random() * 4);
+  }
+  southBankGeo.computeVertexNormals();
+  const southBank = new THREE.Mesh(southBankGeo, bankMat.clone());
+  southBank.rotation.x = -Math.PI / 2;
+  southBank.position.set(0, 0.5, 380);
+  southBank.receiveShadow = true;
+  scene.add(southBank);
+
+  // Chibi hill (red cliff)
+  const hillGeo = new THREE.ConeGeometry(40, 50, 8, 4);
+  const hillMat = new THREE.MeshPhongMaterial({ color: 0x8b4513, flatShading: true });
+  const hill = new THREE.Mesh(hillGeo, hillMat);
+  hill.position.set(100, 15, 350);
+  hill.castShadow = true;
+  hill.receiveShadow = true;
+  scene.add(hill);
+
+  // Terrain labels using sprites
+  addLabel3D('赤壁 (Chibi)', 100, 55, 350, 0xff4444);
+  addLabel3D('長江 (Yangtze River)', -200, 8, 0, 0x88aacc, 1.5);
+  addLabel3D('烏林 (Wu Lin)', -200, 8, -380, 0x88aacc);
+  addLabel3D('夏口 (Xia Kou)', -500, 8, -200, 0x88aacc);
+  addLabel3D('華容道 (Hua Rong Dao)', -400, 8, 200, 0x88aacc);
+  addLabel3D('荊州 (Jing Zhou)', -700, 8, -300, 0x88aacc);
+}
+
+function addLabel3D(text, x, y, z, color, scale = 1) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 512;
+  canvas.height = 128;
+  ctx.fillStyle = 'transparent';
+  ctx.fillRect(0, 0, 512, 128);
+  ctx.font = 'bold 36px "Microsoft JhengHei", "Noto Sans TC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.8)';
+  ctx.fillText(text, 257, 65);
+  // Text
+  ctx.fillStyle = '#' + color.toString(16).padStart(6, '0');
+  ctx.fillText(text, 256, 64);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.position.set(x, y, z);
+  sprite.scale.set(80 * scale, 20 * scale, 1);
+  scene.add(sprite);
+  return sprite;
+}
+
+// ============ SHIP CREATION ============
+function createShip(color, size = 1) {
+  const group = new THREE.Group();
+
+  // Hull
+  const hullGeo = new THREE.BoxGeometry(8 * size, 3 * size, 20 * size);
+  const hullMat = new THREE.MeshPhongMaterial({ color: 0x8B7355 });
+  const hull = new THREE.Mesh(hullGeo, hullMat);
+  hull.castShadow = true;
+  group.add(hull);
+
+  // Deck
+  const deckGeo = new THREE.BoxGeometry(7 * size, 0.5 * size, 19 * size);
+  const deckMat = new THREE.MeshPhongMaterial({ color: 0xA08060 });
+  const deck = new THREE.Mesh(deckGeo, deckMat);
+  deck.position.y = 1.75 * size;
+  group.add(deck);
+
+  // Mast
+  const mastGeo = new THREE.CylinderGeometry(0.3 * size, 0.3 * size, 15 * size, 6);
+  const mastMat = new THREE.MeshPhongMaterial({ color: 0x6B5240 });
+  const mast = new THREE.Mesh(mastGeo, mastMat);
+  mast.position.y = 9.5 * size;
+  group.add(mast);
+
+  // Sail
+  const sailGeo = new THREE.PlaneGeometry(6 * size, 10 * size);
+  const sailMat = new THREE.MeshPhongMaterial({
+    color: color,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.85
+  });
+  const sail = new THREE.Mesh(sailGeo, sailMat);
+  sail.position.set(0, 9 * size, 0);
+  group.add(sail);
+
+  // Flag
+  const flagGeo = new THREE.PlaneGeometry(4 * size, 3 * size);
+  const flagCanvas = document.createElement('canvas');
+  flagCanvas.width = 128; flagCanvas.height = 96;
+  const fCtx = flagCanvas.getContext('2d');
+  fCtx.fillStyle = '#' + color.toString(16).padStart(6, '0');
+  fCtx.fillRect(0, 0, 128, 96);
+  fCtx.fillStyle = '#fff';
+  fCtx.font = 'bold 48px sans-serif';
+  fCtx.textAlign = 'center';
+  fCtx.textBaseline = 'middle';
+  const flagChar = color === 0x4488ff ? '曹' : color === 0xff4444 ? '孫' : '劉';
+  fCtx.fillText(flagChar, 64, 48);
+  const flagTex = new THREE.CanvasTexture(flagCanvas);
+  const flagMat = new THREE.MeshBasicMaterial({ map: flagTex, side: THREE.DoubleSide });
+  const flag = new THREE.Mesh(flagGeo, flagMat);
+  flag.position.set(0, 16 * size, 0);
+  group.add(flag);
+
+  return group;
+}
+
+// ============ ARMY DATA ============
+const caoShips = [];
+const sunShips = [];
+const liuShips = [];
+const allUnits = []; // { group, army, x, z, targetX, targetZ, speed, type, name }
+
+function placeArmyShips() {
+  // Cao Cao fleet - north side of river, moving south
+  for (let i = 0; i < 40; i++) {
+    const ship = createShip(0x4488ff, 0.7 + Math.random() * 0.3);
+    const col = i % 8;
+    const row = Math.floor(i / 8);
+    const x = -140 + col * 40 + (Math.random() - 0.5) * 20;
+    const z = -320 + row * 35;
+    ship.position.set(x, 0, z);
+    scene.add(ship);
+    const unit = { group: ship, army: 'cao', baseX: x, baseZ: z, x, z, targetX: x, targetZ: z, speed: 0.05 + Math.random() * 0.03, type: col === 0 && row === 0 ? 'flagship' : 'warship', name: col === 0 && row === 0 ? '曹操座艦' : '' };
+    caoShips.push(unit);
+    allUnits.push(unit);
+  }
+
+  // Sun Quan fleet - south side
+  for (let i = 0; i < 20; i++) {
+    const ship = createShip(0xff4444, 0.7 + Math.random() * 0.3);
+    const col = i % 5;
+    const row = Math.floor(i / 5);
+    const x = -80 + col * 40 + (Math.random() - 0.5) * 20;
+    const z = 280 + row * 35;
+    ship.position.set(x, 0, z);
+    scene.add(ship);
+    const unit = { group: ship, army: 'sun', baseX: x, baseZ: z, x, z, targetX: x, targetZ: z, speed: 0.06 + Math.random() * 0.03, type: col === 2 && row === 0 ? 'flagship' : 'warship', name: col === 2 && row === 0 ? '周瑜座艦' : '' };
+    sunShips.push(unit);
+    allUnits.push(unit);
+  }
+
+  // Liu Bei troops - far south, land forces
+  for (let i = 0; i < 12; i++) {
+    const ship = createShip(0x44cc44, 0.5 + Math.random() * 0.2);
+    const col = i % 4;
+    const row = Math.floor(i / 4);
+    const x = -60 + col * 45 + (Math.random() - 0.5) * 15;
+    const z = 360 + row * 30;
+    ship.position.set(x, 0, z);
+    scene.add(ship);
+    const unit = { group: ship, army: 'liu', baseX: x, baseZ: z, x, z, targetX: x, targetZ: z, speed: 0.04 + Math.random() * 0.02, type: col === 1 && row === 0 ? 'flagship' : 'warship', name: col === 1 && row === 0 ? '劉備本陣' : '' };
+    liuShips.push(unit);
+    allUnits.push(unit);
+  }
+}
+
+// ============ GENERALS ============
+const generals = [];
+
+function createGeneral(name, title, color, x, y, z) {
+  const group = new THREE.Group();
+
+  // Body glow
+  const glowGeo = new THREE.SphereGeometry(2, 12, 12);
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: color,
+    transparent: true,
+    opacity: 0.4
+  });
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  group.add(glow);
+
+  // Inner sphere
+  const innerGeo = new THREE.SphereGeometry(1, 8, 8);
+  const innerMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const inner = new THREE.Mesh(innerGeo, innerMat);
+  group.add(inner);
+
+  // Point light
+  const light = new THREE.PointLight(color, 2, 20);
+  group.add(light);
+
+  // Label
+  addLabel3D(name, x, y + 10, z, color);
+
+  group.position.set(x, y, z);
+  scene.add(group);
+
+  generals.push({ group, name, title, color, x, y, z, baseX: x, baseY: y, baseZ: z });
+  return group;
+}
+
+function placeGenerals() {
+  createGeneral('曹操 Cao Cao', '魏王 · 80萬大軍', 0x4488ff, -140, 5, -300);
+  createGeneral('周瑜 Zhou Yu', '大都督 · 吳軍', 0xff4444, 0, 5, 300);
+  createGeneral('劉備 Liu Bei', '皇叔 · 2萬精兵', 0x44cc44, -60, 5, 380);
+  createGeneral('諸葛亮 Zhuge Liang', '軍師 · 劉軍', 0x44cc44, -30, 5, 370);
+  createGeneral('黃蓋 Huang Gai', '老將 · 火攻主謀', 0xff4444, 30, 5, 310);
+  createGeneral('龐統 Pang Tong', '鳳雛 · 連環計', 0x44cc44, -100, 5, -290);
+  createGeneral('關羽 Guan Yu', '萬軍取上将', 0x44cc44, -100, 5, 390);
+  createGeneral('趙雲 Zhao Yun', '長坂橋英雄', 0x44cc44, -80, 5, 395);
+  createGeneral('張昭 Zhang Zhao', '主和派謀士', 0x4488ff, -130, 5, -310);
+  createGeneral('魯肅 Lu Su', '盟約推手', 0xff4444, 20, 5, 340);
+  createGeneral('許褚 Xu Chu', '虎賁將軍', 0x4488ff, -150, 5, -290);
+  createGeneral('程昱 Cheng Yu', '謀士', 0x4488ff, -160, 5, -310);
+}
+
+// ============ FIRE ATTACK EFFECTS ============
+const fireParticles = [];
+const smokeParticles = [];
+
+function createFireEffect(x, y, z) {
+  // Fire particles
+  for (let i = 0; i < 30; i++) {
+    const geo = new THREE.SphereGeometry(0.5 + Math.random() * 1.5, 6, 6);
+    const mat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color().setHSL(0.05 + Math.random() * 0.08, 1, 0.4 + Math.random() * 0.3),
+      transparent: true,
+      opacity: 0.9
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      x + (Math.random() - 0.5) * 15,
+      y + Math.random() * 5,
+      z + (Math.random() - 0.5) * 15
+    );
+    scene.add(mesh);
+    fireParticles.push({
+      mesh,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: 0.5 + Math.random() * 1,
+      vz: (Math.random() - 0.5) * 0.5,
+      life: 1,
+      decay: 0.003 + Math.random() * 0.005
+    });
+  }
+
+  // Smoke
+  for (let i = 0; i < 15; i++) {
+    const geo = new THREE.SphereGeometry(2 + Math.random() * 4, 6, 6);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x333333,
+      transparent: true,
+      opacity: 0.5
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      x + (Math.random() - 0.5) * 20,
+      y + 5 + Math.random() * 10,
+      z + (Math.random() - 0.5) * 20
+    );
+    scene.add(mesh);
+    smokeParticles.push({
+      mesh,
+      vy: 0.3 + Math.random() * 0.3,
+      life: 1,
+      decay: 0.002 + Math.random() * 0.003
+    });
+  }
+
+  // Flash light
+  const flashLight = new THREE.PointLight(0xff6600, 10, 200);
+  flashLight.position.set(x, y + 10, z);
+  scene.add(flashLight);
+  setTimeout(() => scene.remove(flashLight), 3000);
+}
+
+// ============ ARROW / PROJECTILE EFFECTS ============
+const projectiles = [];
+
+function createArrowRain(x, z, targetX, targetZ) {
+  for (let i = 0; i < 20; i++) {
+    const geo = new THREE.CylinderGeometry(0.1, 0.1, 3, 4);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffaa44 });
+    const mesh = new THREE.Mesh(geo, mat);
+    const startX = x + (Math.random() - 0.5) * 40;
+    const startZ = z + (Math.random() - 0.5) * 20;
+    mesh.position.set(startX, 20, startZ);
+    scene.add(mesh);
+
+    const dir = new THREE.Vector3(targetX - startX, -20, targetZ - startZ).normalize();
+    projectiles.push({
+      mesh,
+      vx: dir.x * 2,
+      vy: dir.y * 2,
+      vz: dir.z * 2,
+      life: 1
+    });
+  }
+}
+
+// ============ LIGHTNING EFFECT ============
+function createLightning(x, y, z) {
+  const points = [];
+  let cx = x, cy = y + 50, cz = z;
+  for (let i = 0; i < 8; i++) {
+    cx += (Math.random() - 0.5) * 10;
+    cy -= 8 + Math.random() * 4;
+    cz += (Math.random() - 0.5) * 10;
+    points.push(new THREE.Vector3(cx, cy, cz));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(points);
+  const mat = new THREE.LineBasicMaterial({ color: 0xaaccff, linewidth: 3 });
+  const line = new THREE.Line(geo, mat);
+  scene.add(line);
+
+  const flash = new THREE.PointLight(0xaaccff, 20, 500);
+  flash.position.set(x, y + 30, z);
+  scene.add(flash);
+
+  setTimeout(() => { scene.remove(line); scene.remove(flash); }, 500);
+}
+
+// ============ BATTLE TIMELINE ============
+const timelineEvents = [
+  { time: 0, label: '曹操南下', desc: '曹操統率八十萬大軍自荊州順江而下', weather: '🌤 晴朗' },
+  { time: 0.05, label: '劉備敗退', desc: '劉備於當陽長坂坡敗退，撤往夏口', weather: '🌤 晴朗' },
+  { time: 0.1, label: '孫劉聯盟', desc: '諸葛亮赴柴桑勸孫權聯合抗曹', weather: '🌤 微風' },
+  { time: 0.15, label: '周瑜率軍', desc: '周瑜率吳軍五萬出江陵', weather: '☁ 陰天' },
+  { time: 0.2, label: '曹軍駐紮烏林', desc: '曹操大軍駐紮江北烏林', weather: '☁ 陰天' },
+  { time: 0.25, label: '龐統連環計', desc: '龐統獻計，曹軍船隻以鐵鏈相連', weather: '🌧 小雨' },
+  { time: 0.3, label: '周瑜探軍', desc: '周瑜親率輕舟觀察曹軍陣地', weather: '🌧 小雨' },
+  { time: 0.35, label: '黃蓋詐降', desc: '黃蓋獻苦肉計，偽裝投降曹操', weather: '⛅ 轉晴' },
+  { time: 0.4, label: '草船借箭', desc: '諸葛亮草船借箭，集備軍資', weather: '🌫 濃霧' },
+  { time: 0.45, label: '東南風起', desc: '諸葛亮借東風，東南風大起！', weather: '💨 東南風大起！', wind: true },
+  { time: 0.5, label: '火攻準備', desc: '黃蓋率蒙衝鬥艦，滿載易燃物', weather: '💨 東南風強勁' },
+  { time: 0.55, label: '火船出發', desc: '十艘火船趁東南風向曹軍駛去', weather: '🔥 風助火勢' },
+  { time: 0.6, label: '赤壁火攻！', desc: '火船衝入曹營！大火吞噬曹軍連環艦！', weather: '🔥 烈火燎原！', fire: true },
+  { time: 0.65, label: '曹軍大亂', desc: '曹軍艦隊全線燃燒，士氣崩潰', weather: '🔥 煙塵滾滾' },
+  { time: 0.7, label: '孫劉夾擊', desc: '孫劉聯軍南北夾擊，大破曹軍', weather: '🔥 戰火連天' },
+  { time: 0.75, label: '曹操敗走', desc: '曹操率殘兵由華容道撤退', weather: '🌧 大雨' },
+  { time: 0.8, label: '關羽義釋', desc: '關羽念舊情，放曹操過華容道', weather: '🌧 大雨' },
+  { time: 0.85, label: '周瑜追擊', desc: '周瑜率軍追擊至南郡', weather: '⛅ 風停' },
+  { time: 0.9, label: '三足鼎立', desc: '赤壁之戰奠定三國鼎立之局', weather: '☀ 天晴' },
+  { time: 0.95, label: '天下三分', desc: '魏蜀吳三分天下，時代開啟', weather: '☀ 晴朗' },
+];
+
+// ============ BATTLE PHASE SYSTEM ============
+let currentPhase = 0;
+let timelineProgress = 0;
+let isPlaying = false;
+let playSpeed = 1;
+let fireTriggered = false;
+let windTriggered = false;
+let lightningTimer = 0;
+
+function updateBattlePhase(progress) {
+  currentPhase = progress;
+
+  // Update time display
+  const yearNames = ['冬十月', '冬十一月', '冬十二月', '建安十四年'];
+  const yi = Math.min(Math.floor(progress * 3), 3);
+  document.getElementById('time-display').textContent = `建安十三年 · ${yearNames[yi]}`;
+
+  // Update weather
+  let currentWeather = timelineEvents[0].weather;
+  for (let i = timelineEvents.length - 1; i >= 0; i--) {
+    if (progress >= timelineEvents[i].time) {
+      currentWeather = timelineEvents[i].weather;
+      break;
+    }
+  }
+  document.getElementById('weather').textContent = currentWeather;
+
+  // Update event list highlight
+  const eventList = document.getElementById('event-list');
+  eventList.innerHTML = '';
+  timelineEvents.forEach((evt, idx) => {
+    const li = document.createElement('li');
+    li.className = progress >= evt.time ? 'active' : '';
+    li.innerHTML = `<span class="time">${Math.floor(evt.time * 100)}%</span> ${evt.label}`;
+    eventList.appendChild(li);
+  });
+
+  // Update army stats based on phase
+  const caoPower = Math.max(0, 100 - progress * 150);
+  const sunPower = Math.min(80, 60 + progress * 40);
+  const liuPower = Math.min(60, 24 + progress * 50);
+  document.getElementById('cao-count').textContent = Math.floor(830000 * caoPower / 100).toLocaleString();
+  document.getElementById('sun-count').textContent = Math.floor(50000 * sunPower / 60).toLocaleString();
+  document.getElementById('liu-count').textContent = Math.floor(20000 * liuPower / 24).toLocaleString();
+  document.getElementById('cao-bar').style.width = caoPower + '%';
+  document.getElementById('sun-bar').style.width = sunPower + '%';
+  document.getElementById('liu-bar').style.width = liuPower + '%';
+  document.getElementById('cao-str').textContent = Math.floor(caoPower) + '%';
+  document.getElementById('sun-str').textContent = Math.floor(sunPower) + '%';
+  document.getElementById('liu-str').textContent = Math.floor(liuPower) + '%';
+
+  // Move ships based on phase
+  updateShipPositions(progress);
+
+  // Fire attack trigger
+  if (progress >= 0.6 && !fireTriggered) {
+    fireTriggered = true;
+    // Fire multiple Cao ships
+    for (let i = 0; i < caoShips.length; i++) {
+      const s = caoShips[i];
+      setTimeout(() => {
+        createFireEffect(s.group.position.x, s.group.position.y, s.group.position.z);
+      }, i * 100);
+    }
+    // Big fire at Cao camp center
+    createFireEffect(-140, 0, -280);
+    createFireEffect(-100, 0, -300);
+    createFireEffect(-180, 0, -310);
+  }
+
+  // Wind trigger
+  if (progress >= 0.45 && !windTriggered) {
+    windTriggered = true;
+  }
+
+  // Lightning during storm phases
+  if (progress >= 0.75 && progress <= 0.85) {
+    lightningTimer += 0.016;
+    if (lightningTimer > 2) {
+      lightningTimer = 0;
+      createLightning(
+        (Math.random() - 0.5) * 400,
+        0,
+        (Math.random() - 0.5) * 400
+      );
+    }
+  }
+
+  // Update generals positions
+  updateGenerals(progress);
+
+  // Scene lighting changes
+  if (progress >= 0.6 && progress <= 0.75) {
+    ambientLight.color.setHex(0x553311);
+    ambientLight.intensity = 0.4 + Math.sin(Date.now() * 0.01) * 0.2;
+    renderer.toneMappingExposure = 0.6;
+    scene.fog.color.setHex(0x2a1000);
+  } else if (progress >= 0.8) {
+    ambientLight.color.setHex(0x332211);
+    ambientLight.intensity = 0.6;
+    renderer.toneMappingExposure = 0.8;
+    scene.fog.color.setHex(0x0a0500);
+  } else {
+    ambientLight.color.setHex(0x332211);
+    ambientLight.intensity = 0.6;
+    renderer.toneMappingExposure = 0.8;
+    scene.fog.color.setHex(0x0a0500);
+  }
+}
+
+function updateShipPositions(progress) {
+  // Cao ships movement
+  caoShips.forEach((s, i) => {
+    if (progress < 0.6) {
+      // Initial approach and formation
+      const approach = Math.min(1, progress * 5);
+      s.targetX = s.baseX + Math.sin(progress * 3 + i) * 10;
+      s.targetZ = s.baseZ + approach * 50;
+
+      if (progress >= 0.25 && progress < 0.3) {
+        // Chain formation (Pang Tong's plan)
+        const chainRow = Math.floor(i / 8);
+        const chainCol = i % 8;
+        s.targetX = s.baseX + chainCol * 2;
+      }
+    } else if (progress < 0.75) {
+      // Scattered after fire
+      const scatter = (progress - 0.6) * 5;
+      s.targetX = s.baseX + (Math.random() - 0.5) * 200 * scatter;
+      s.targetZ = s.baseZ - scatter * 150;
+    } else {
+      // Retreat northwest
+      const retreat = (progress - 0.75) * 4;
+      s.targetX = s.baseX - retreat * 300;
+      s.targetZ = s.baseZ - retreat * 200;
+    }
+
+    s.group.position.x += (s.targetX - s.group.position.x) * 0.02;
+    s.group.position.z += (s.targetZ - s.group.position.z) * 0.02;
+
+    // Bobbing
+    s.group.position.y = Math.sin(Date.now() * 0.002 + i) * 0.5;
+
+    // Tilt
+    s.group.rotation.z = (s.targetX - s.group.position.x) * 0.01;
+    s.group.rotation.x = (s.targetZ - s.group.position.z) * 0.005;
+  });
+
+  // Sun ships movement
+  sunShips.forEach((s, i) => {
+    if (progress < 0.5) {
+      s.targetX = s.baseX;
+      s.targetZ = s.baseZ;
+    } else if (progress < 0.65) {
+      // Attack formation
+      const attack = (progress - 0.5) * 6;
+      s.targetX = s.baseX;
+      s.targetZ = s.baseZ - attack * 80;
+    } else {
+      // Pursuit
+      const pursuit = (progress - 0.65) * 3;
+      s.targetX = s.baseX + Math.sin(progress * 2) * 20;
+      s.targetZ = s.baseZ - 45 - pursuit * 100;
+    }
+
+    s.group.position.x += (s.targetX - s.group.position.x) * 0.02;
+    s.group.position.z += (s.targetZ - s.group.position.z) * 0.02;
+    s.group.position.y = Math.sin(Date.now() * 0.002 + i + 100) * 0.5;
+  });
+
+  // Liu ships movement
+  liuShips.forEach((s, i) => {
+    if (progress < 0.1) {
+      // Retreat phase
+      const retreat = progress * 5;
+      s.targetX = s.baseX - retreat * 50;
+      s.targetZ = s.baseZ + retreat * 30;
+    } else if (progress < 0.55) {
+      s.targetX = s.baseX;
+      s.targetZ = s.baseZ;
+    } else {
+      // Join attack
+      const attack = (progress - 0.55) * 4;
+      s.targetX = s.baseX;
+      s.targetZ = s.baseZ - attack * 100;
+    }
+
+    s.group.position.x += (s.targetX - s.group.position.x) * 0.02;
+    s.group.position.z += (s.targetZ - s.group.position.z) * 0.02;
+    s.group.position.y = Math.sin(Date.now() * 0.002 + i + 200) * 0.5;
+  });
+}
+
+function updateGenerals(progress) {
+  generals.forEach((g, i) => {
+    // Subtle movement
+    g.group.position.x = g.baseX + Math.sin(progress * 4 + i) * 5;
+    g.group.position.z = g.baseZ + Math.cos(progress * 3 + i) * 5;
+
+    // Pulse effect
+    const pulse = 1 + Math.sin(Date.now() * 0.003) * 0.2;
+    g.group.children[0].scale.setScalar(pulse);
+  });
+}
+
+// ============ WATER ANIMATION ============
+function animateWater(time) {
+  scene.children.forEach(child => {
+    if (child.geometry && child.geometry.type === 'PlaneGeometry') {
+      const pos = child.geometry.attributes.position;
+      if (pos) {
+        for (let i = 0; i < pos.count; i++) {
+          const x = pos.getX(i);
+          const y = pos.getY(i);
+          const wave = Math.sin(x * 0.02 + time * 0.5) * 1.5 +
+                       Math.sin(y * 0.03 + time * 0.3) * 1 +
+                       Math.sin((x + y) * 0.01 + time) * 0.8;
+          // Only animate if wind is active
+          if (windTriggered) {
+            pos.setZ(i, wave * 1.5);
+          } else {
+            pos.setZ(i, wave * 0.5);
+          }
+        }
+        pos.needsUpdate = true;
+      }
+    }
+  });
+}
+
+// ============ PARTICLE ANIMATION ============
+function updateParticles() {
+  for (let i = fireParticles.length - 1; i >= 0; i--) {
+    const p = fireParticles[i];
+    p.mesh.position.x += p.vx;
+    p.mesh.position.y += p.vy;
+    p.mesh.position.z += p.vz;
+    p.life -= p.decay;
+    p.mesh.material.opacity = p.life;
+    p.mesh.scale.setScalar(p.life);
+    if (p.life <= 0) {
+      scene.remove(p.mesh);
+      fireParticles.splice(i, 1);
+    }
+  }
+
+  for (let i = smokeParticles.length - 1; i >= 0; i--) {
+    const p = smokeParticles[i];
+    p.mesh.position.y += p.vy;
+    p.life -= p.decay;
+    p.mesh.material.opacity = p.life * 0.5;
+    p.mesh.scale.setScalar(1 + (1 - p.life) * 2);
+    if (p.life <= 0) {
+      scene.remove(p.mesh);
+      smokeParticles.splice(i, 1);
+    }
+  }
+
+  for (let i = projectiles.length - 1; i >= 0; i--) {
+    const p = projectiles[i];
+    p.mesh.position.x += p.vx;
+    p.mesh.position.y += p.vy;
+    p.mesh.position.z += p.vz;
+    p.vy -= 0.05; // gravity
+    p.life -= 0.01;
+    if (p.life <= 0 || p.mesh.position.y < 0) {
+      scene.remove(p.mesh);
+      projectiles.splice(i, 1);
+    }
+  }
+}
+
+// ============ CAMERA ANIMATION ============
+const cameraPositions = [
+  { x: 0, y: 350, z: 450, target: [0, 0, -50] },     // Wide overview
+  { x: -200, y: 150, z: 0, target: [-140, 0, -280] },  // Cao Cao closeup
+  { x: 0, y: 120, z: 350, target: [0, 0, 300] },       // Zhou Yu closeup
+  { x: -50, y: 200, z: 200, target: [-80, 0, 0] },     // Center battle view
+  { x: 200, y: 180, z: 100, target: [0, 0, -50] },     // Side angle
+  { x: -140, y: 80, z: -250, target: [-140, 5, -280] },// Cao Cao flagship
+  { x: 0, y: 400, z: 0, target: [0, 0, 0] },           // Bird's eye
+  { x: -300, y: 250, z: -100, target: [-100, 0, 0] },  // North view
+];
+
+let cameraAnimIdx = 0;
+let cameraAnimT = 0;
+let autoCamera = true;
+
+function updateCamera(time) {
+  if (!autoCamera) return;
+
+  // Change camera angle based on battle phase
+  if (timelineProgress < 0.2) cameraAnimIdx = 0;
+  else if (timelineProgress < 0.35) cameraAnimIdx = 1;
+  else if (timelineProgress < 0.5) cameraAnimIdx = 2;
+  else if (timelineProgress < 0.6) cameraAnimIdx = 3;
+  else if (timelineProgress < 0.7) cameraAnimIdx = 4;
+  else if (timelineProgress < 0.8) cameraAnimIdx = 5;
+  else cameraAnimIdx = 6;
+
+  const cp = cameraPositions[cameraAnimIdx];
+  const next = cameraPositions[(cameraAnimIdx + 1) % cameraPositions.length];
+
+  cameraAnimT += 0.001 * playSpeed;
+  if (cameraAnimT > 1) {
+    cameraAnimT = 0;
+  }
+
+  const t = cameraAnimT;
+  const smoothT = t * t * (3 - 2 * t); // smoothstep
+
+  camera.position.x += (cp.x - camera.position.x) * 0.005;
+  camera.position.y += (cp.y - camera.position.y) * 0.005;
+  camera.position.z += (cp.z - camera.position.z) * 0.005;
+
+  const targetX = cp.target[0] + (next.target[0] - cp.target[0]) * smoothT;
+  const targetY = cp.target[1] + (next.target[1] - cp.target[1]) * smoothT;
+  const targetZ = cp.target[2] + (next.target[2] - cp.target[2]) * smoothT;
+  controls.target.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.02);
+}
+
+// ============ MINIMAP ============
+function updateMinimap() {
+  const canvas = document.getElementById('minimap-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 160;
+  canvas.height = 100;
+
+  ctx.fillStyle = '#0a1a2a';
+  ctx.fillRect(0, 0, 160, 100);
+
+  // River
+  ctx.fillStyle = '#1a3a5a';
+  ctx.fillRect(0, 30, 160, 40);
+
+  const mapX = (x) => (x / 1200 + 0.5) * 160;
+  const mapZ = (z) => (-z / 1000 + 0.5) * 100;
+
+  // Ships
+  caoShips.forEach(s => {
+    ctx.fillStyle = '#4488ff';
+    ctx.fillRect(mapX(s.group.position.x) - 1, mapZ(s.group.position.z) - 1, 2, 2);
+  });
+  sunShips.forEach(s => {
+    ctx.fillStyle = '#ff4444';
+    ctx.fillRect(mapX(s.group.position.x) - 1, mapZ(s.group.position.z) - 1, 2, 2);
+  });
+  liuShips.forEach(s => {
+    ctx.fillStyle = '#44cc44';
+    ctx.fillRect(mapX(s.group.position.x) - 1, mapZ(s.group.position.z) - 1, 2, 2);
+  });
+
+  // Camera indicator
+  const cx = mapX(camera.position.x);
+  const cz = mapZ(camera.position.z);
+  ctx.strokeStyle = '#ffa500';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(cx - 3, cz - 3, 6, 6);
+}
+
+// ============ TIMELINE INTERACTION ============
+const track = document.getElementById('timeline-track');
+const thumb = document.getElementById('timeline-thumb');
+const fill = document.getElementById('timeline-fill');
+let dragging = false;
+
+track.addEventListener('mousedown', (e) => {
+  dragging = true;
+  updateTimelineFromEvent(e);
+});
+document.addEventListener('mousemove', (e) => {
+  if (dragging) updateTimelineFromEvent(e);
+});
+document.addEventListener('mouseup', () => { dragging = false; });
+
+function updateTimelineFromEvent(e) {
+  const rect = track.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  timelineProgress = x;
+  fill.style.width = (x * 100) + '%';
+  thumb.style.left = (x * 100) + '%';
+  updateBattlePhase(x);
+}
+
+// ============ CONTROLS ============
+window.togglePlay = function() {
+  isPlaying = !isPlaying;
+  document.getElementById('btn-play').textContent = isPlaying ? '⏸ 暫停' : '▶ 播放';
+  document.getElementById('btn-play').classList.toggle('active', isPlaying);
+  if (isPlaying) autoCamera = true;
+};
+
+window.changeSpeed = function(delta) {
+  playSpeed = Math.max(0.25, Math.min(4, playSpeed + delta * 0.25));
+};
+
+window.startExperience = function() {
+  document.getElementById('intro-overlay').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('intro-overlay').style.display = 'none';
+  }, 1000);
+  isPlaying = true;
+  document.getElementById('btn-play').textContent = '⏸ 暫停';
+  document.getElementById('btn-play').classList.add('active');
+};
+
+// Mouse controls indicator
+let userInteracting = false;
+controls.addEventListener('start', () => { userInteracting = true; autoCamera = false; });
+controls.addEventListener('end', () => {
+  setTimeout(() => { if (!isPlaying) autoCamera = false; else autoCamera = true; }, 3000);
+});
+
+// Keyboard controls
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    togglePlay();
+  }
+  if (e.code === 'ArrowRight') {
+    timelineProgress = Math.min(1, timelineProgress + 0.02);
+    fill.style.width = (timelineProgress * 100) + '%';
+    thumb.style.left = (timelineProgress * 100) + '%';
+    updateBattlePhase(timelineProgress);
+  }
+  if (e.code === 'ArrowLeft') {
+    timelineProgress = Math.max(0, timelineProgress - 0.02);
+    fill.style.width = (timelineProgress * 100) + '%';
+    thumb.style.left = (timelineProgress * 100) + '%';
+    fireTriggered = false;
+    windTriggered = false;
+    updateBattlePhase(timelineProgress);
+  }
+});
+
+// ============ RAYCASTER FOR CLICKING GENERALS ============
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+renderer.domElement.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+
+  generals.forEach(g => {
+    const intersects = raycaster.intersectObject(g.group.children[0]);
+    if (intersects.length > 0) {
+      // Show info - fly camera to general
+      autoCamera = false;
+      controls.target.set(g.group.position.x, g.group.position.y, g.group.position.z);
+      camera.position.set(
+        g.group.position.x + 30,
+        g.group.position.y + 40,
+        g.group.position.z + 40
+      );
+
+      // Flash info in event panel
+      const panel = document.getElementById('event-panel');
+      panel.querySelector('h3').textContent = `⚔ ${g.name}`;
+      const list = document.getElementById('event-list');
+      list.innerHTML = `<li class="active"><span class="time">身份</span> ${g.title}</li>`;
+
+      // Restore after 5 seconds
+      setTimeout(() => {
+        panel.querySelector('h3').textContent = '⚔ 戰爭事件';
+      }, 5000);
+    }
+  });
+});
+
+// ============ RESIZE ============
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ============ INIT ============
+createTerrain();
+placeArmyShips();
+placeGenerals();
+
+// ============ ANIMATION LOOP ============
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+  const delta = clock.getDelta();
+
+  // Timeline progression
+  if (isPlaying) {
+    timelineProgress += 0.0003 * playSpeed;
+    if (timelineProgress > 1) {
+      timelineProgress = 1;
+      isPlaying = false;
+      document.getElementById('btn-play').textContent = '▶ 重播';
+      document.getElementById('btn-play').classList.remove('active');
+    }
+    fill.style.width = (timelineProgress * 100) + '%';
+    thumb.style.left = (timelineProgress * 100) + '%';
+  }
+
+  // Update battle
+  updateBattlePhase(timelineProgress);
+  updateParticles();
+  animateWater(time);
+  updateCamera(time);
+
+  // Update minimap every 10 frames
+  if (Math.floor(time * 60) % 10 === 0) {
+    updateMinimap();
+  }
+
+  // Re-trigger fire particles if still in fire phase
+  if (timelineProgress >= 0.6 && timelineProgress <= 0.7) {
+    if (Math.random() < 0.1) {
+      const randomShip = caoShips[Math.floor(Math.random() * caoShips.length)];
+      if (randomShip) {
+        createFireEffect(
+          randomShip.group.position.x,
+          randomShip.group.position.y,
+          randomShip.group.position.z
+        );
+      }
+    }
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>
